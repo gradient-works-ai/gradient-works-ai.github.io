@@ -1,8 +1,8 @@
 ---
-import { site } from '../data/site';
+import { site, formKey } from '../data/site';
 
-// Without JS the form posts straight to FormSubmit and lands on /contact/thanks/.
-const endpoint = `https://formsubmit.co/${site.email}`;
+// Without JS the form posts straight to Web3Forms and lands on /contact/thanks/.
+const endpoint = 'https://api.web3forms.com/submit';
 const thanks = new URL('/contact/thanks/', Astro.site).href;
 
 const work = ['Custom model build', 'Testing & evaluation', 'Research & prototyping', 'AI-native feature', 'Not sure yet'];
@@ -35,10 +35,11 @@ const timeline = ['As soon as possible', 'Within a month', '1–3 months', 'Flex
 
     <div class="card glass" data-intro>
       <form id="brief" action={endpoint} method="POST" novalidate>
-        <input type="hidden" name="_subject" value="New project brief · Gradient Works" />
-        <input type="hidden" name="_template" value="table" />
-        <input type="hidden" name="_next" value={thanks} />
-        <input type="text" name="_honey" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
+        <input type="hidden" name="access_key" value={formKey} />
+        <input type="hidden" name="subject" value="New project brief · Gradient Works" />
+        <input type="hidden" name="from_name" value="Gradient Works website" />
+        <input type="hidden" name="redirect" value={thanks} />
+        <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
 
         <div class="progress" aria-hidden="true"><span id="briefBar"></span></div>
         <p class="stepinfo mono" id="briefStep" aria-live="polite">Step 1 of 3 · The work</p>
@@ -95,7 +96,7 @@ const timeline = ['As soon as possible', 'Within a month', '1–3 months', 'Flex
             <label class="field"><span class="lbl">Company or lab</span><input name="Company" autocomplete="organization" /></label>
             <label class="field"><span class="lbl">Links</span><input name="Links" placeholder="Website, dataset, repo…" /></label>
           </div>
-          <p class="fine">Delivered by <a href="https://formsubmit.co" target="_blank" rel="noopener">FormSubmit</a> to {site.author.name}'s inbox. Used only to reply to you.</p>
+          <p class="fine">Delivered by <a href="https://web3forms.com" target="_blank" rel="noopener">Web3Forms</a> to {site.author.name}'s inbox. Used only to reply to you.</p>
         </fieldset>
 
         <div class="actions">

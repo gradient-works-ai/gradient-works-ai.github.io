@@ -1,7 +1,9 @@
-// Three-step project brief. Sends JSON to FormSubmit's AJAX endpoint; on any failure it offers
-// a pre-filled email instead, so a brief is never lost. Without JS the <form> posts normally.
+// Three-step project brief. Sends JSON to Web3Forms; if there's no key, the request fails or it takes
+// longer than TIMEOUT, it offers a pre-filled email instead, so a brief is never lost.
+// Without JS the <form> posts normally.
 const EMAIL = 'dasarimanas049@gmail.com';
-const AJAX = `https://formsubmit.co/ajax/${EMAIL}`;
+const ENDPOINT = 'https://api.web3forms.com/submit';
+const TIMEOUT = 12_000;
 
 type Brief = Record<string, string>;
 
@@ -99,19 +101,28 @@ export function initForm() {
     e.preventDefault();
     if (!valid(steps[i])) return;   // earlier steps were checked on Next
     const b = collect();
-    if ((form.elements.namedItem('_honey') as HTMLInputElement | null)?.value) return;   // bot
+    if ((form.elements.namedItem('botcheck') as HTMLInputElement | null)?.checked) return;   // bot
+    const key = (form.elements.namedItem('access_key') as HTMLInputElement | null)?.value;
 
     send.disabled = true;
     send.textContent = 'Sending…';
     if (status) status.textContent = '';
+    const abort = new AbortController();
+    const timer = setTimeout(() => abort.abort(), TIMEOUT);
     try {
-      const res = await fetch(AJAX, {
+      if (!key) throw new Error('No form key configured');
+      const res = await fetch(ENDPOINT, {
         method: 'POST',
+        signal: abort.signal,
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify({ ...b, _subject: `New project brief · ${b.Name}`, _template: 'table', _captcha: 'false', _replyto: b.Email }),
+        body: JSON.stringify({
+          access_key: key, subject: `New project brief · ${b.Name}`, from_name: 'Gradient Works website',
+          name: b.Name, email: b.Email, replyto: b.Email, ...b,
+        }),
       });
       const json = await res.json().catch(() => ({}));
-      if (!res.ok || String(json.success) !== 'true') throw new Error(json.message || 'Send failed');
+      if (!res.ok || json.success !== true) throw new Error(json.message || 'Send failed');
+      clearTimeout(timer);
 
       form.hidden = true;
       const done = document.getElementById('briefDone');
@@ -121,9 +132,16 @@ export function initForm() {
       if (state) state.textContent = 'sent ✓';
       document.querySelector('.brief-page')?.scrollIntoView({ behavior: 'smooth' });
     } catch {
+      clearTimeout(timer);
       send.disabled = false;
       send.innerHTML = 'Send brief <span class="arrow">→</span>';
-      if (status) status.innerHTML = `Couldn't send right now. <a href="${mailtoFor(b)}">Send it by email instead</a>, it's pre-filled.`;
+      if (!key) {
+        // No delivery service configured: hand the brief to the visitor's mail app instead.
+        location.href = mailtoFor(b);
+        if (status) status.innerHTML = `Your email app should open with the brief filled in. <a href="${mailtoFor(b)}">Open it again</a> if it didn't.`;
+      } else if (status) {
+        status.innerHTML = `Couldn't send right now. <a href="${mailtoFor(b)}">Send it by email instead</a>, it's pre-filled.`;
+      }
     }
   });
 
