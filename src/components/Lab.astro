@@ -6,17 +6,17 @@ import { lab, site } from '../data/site';
   <div class="wrap">
     <div class="head">
       <div>
-        <p class="eyebrow mono">03 — Lab</p>
+        <p class="eyebrow mono">04 — Lab</p>
         <h2 data-split>A research lab that<br />ships its own models.</h2>
       </div>
       <div class="head-side" data-reveal>
         <p>Between client work we build open models and tools. Each one lives in its own repository, with code, weights and evaluation results you can check yourself.</p>
-        <a class="btn btn-glass btn-sm gh" href={site.github} target="_blank" rel="noopener" data-magnetic>GitHub <span class="arrow">↗</span></a>
+        <a class="btn btn-glass btn-sm gh" href={site.github} target="_blank" rel="noopener">GitHub <span class="arrow">↗</span></a>
       </div>
     </div>
     <div class="work">
       {lab.map((m) => (
-        <a class="item" href={`/lab/${m.slug}/`} data-reveal data-cursor="View model">
+        <a class="item" href={`/lab/${m.slug}/`} data-reveal>
           <div class="media glass" data-tilt><pre class="ascii" id={m.art} data-cols="64" data-fit=".74" aria-hidden="true"></pre></div>
           <div class="meta"><h3>{m.name}</h3><span class="mono">{m.meta}</span></div>
         </a>

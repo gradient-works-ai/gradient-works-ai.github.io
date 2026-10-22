@@ -37,11 +37,29 @@ function out(el: HTMLElement, g: Grid) {
   }).join('\n');
 }
 
+// Size each <pre data-cols> so its columns fill the parent's width (and, with data-rows, its height too).
+function fit(p: HTMLElement) {
+  const box = p.parentElement;
+  if (!box) return;
+  const cs = getComputedStyle(box);
+  const w = (box.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight)) * Number(p.dataset.fit ?? 1);
+  let size = Math.min(Number(p.dataset.max ?? 14), w / (Number(p.dataset.cols) * 0.6));
+  if (p.dataset.rows) {
+    const h = box.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
+    if (h > 0) size = Math.min(size, h / (Number(p.dataset.rows) * 1.2));
+  }
+  p.style.fontSize = `${size}px`;
+}
+
 export function fitAscii() {
-  document.querySelectorAll<HTMLElement>('pre[data-cols]').forEach((p) => {
-    const w = (p.parentElement?.clientWidth ?? 0) * Number(p.dataset.fit ?? 1);
-    p.style.fontSize = Math.min(Number(p.dataset.max ?? 14), w / (Number(p.dataset.cols) * 0.6)) + 'px';
-  });
+  const pres = [...document.querySelectorAll<HTMLElement>('pre[data-cols]')];
+  pres.forEach(fit);
+  const ro = new ResizeObserver((entries) => entries.forEach((e) => {
+    const p = e.target.querySelector<HTMLElement>(':scope > pre[data-cols]');
+    if (p) fit(p);
+  }));
+  pres.forEach((p) => p.parentElement && ro.observe(p.parentElement));
+  document.fonts?.ready.then(() => pres.forEach(fit));
 }
 
 const onSlide = (el: HTMLElement) => () => !!el.closest('.slide')?.classList.contains('on');
@@ -286,8 +304,6 @@ export function initAscii(reduce: boolean) {
   });
 
   fitAscii();
-  addEventListener('resize', fitAscii);
-  document.fonts?.ready.then(fitAscii);
 
   if (reduce) { renderers.forEach((r) => r.draw(30)); return; }
   let last = 0;

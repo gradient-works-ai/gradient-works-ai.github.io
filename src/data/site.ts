@@ -29,30 +29,57 @@ export const services = [
 
 export const steps = [
   {
-    title: 'Scope', cmd: 'gw scope --problem "package defects" --data ./images',
+    title: 'Scope', when: 'Day 1', gives: ['Problem statement', 'Success metric', 'Data audit'], cmd: 'gw scope --problem "package defects" --data ./images',
     body: 'A free 30-minute call. We agree on the problem, the metric and what "good enough" means before any code is written.',
     out: ['✓ 4,812 labelled images · 4 classes', '✓ metric: macro-F1 ≥ 0.85 on a held-out set'],
   },
   {
-    title: 'Baseline', cmd: 'gw baseline',
+    title: 'Baseline', when: 'Week 1', gives: ['Baseline model', 'Reference score'], cmd: 'gw baseline',
     body: 'The simplest model that could work, so every later gain is measured against something real.',
     out: ['logistic_regression     macro-F1  0.61', 'resnet18 (frozen)       macro-F1  0.74'],
   },
   {
-    title: 'Iterate', cmd: 'gw train --sweep 24',
+    title: 'Iterate', when: 'Weeks 1–3', gives: ['Experiment log', 'Weekly updates'], cmd: 'gw train --sweep 24',
     body: 'Tracked experiments, shared weekly. You see the dead ends as well as the wins.',
     out: ['[████████████████████████] 24/24 runs', 'best  efficientnet_b0   macro-F1  0.88'],
   },
   {
-    title: 'Evaluate', cmd: 'gw eval --held-out --slices lighting,camera',
+    title: 'Evaluate', when: 'Week 3', gives: ['Held-out results', 'Failure analysis', 'Robustness checks'], cmd: 'gw eval --held-out --slices lighting,camera',
     body: 'Held-out testing, failure analysis and robustness checks, written up in plain language.',
     out: ['✓ held-out              macro-F1  0.87', '! low-light slice       macro-F1  0.71  → flagged'],
   },
   {
-    title: 'Ship', cmd: 'gw ship',
+    title: 'Ship', when: 'Week 4', gives: ['Code & weights', 'Evaluation report', 'Handover call'], cmd: 'gw ship',
     body: 'Code, weights, documentation and a handover call. You own everything.',
     out: ['✓ code · weights · report.pdf · handover call booked'],
   },
+];
+
+// What the client receives at the end of a project; `note` shows on hover/focus.
+export const handover: { path: string; note: string; meta?: string }[] = [
+  { path: 'client-handover/', note: 'One folder, yours to keep. Nothing hosted on our side.' },
+  { path: '├── README.md', meta: 'start here', note: 'How to install, run and retrain, written for your engineers.' },
+  { path: '├── model/', note: 'Training and inference code, typed and tested.' },
+  { path: '│   ├── train.py', note: 'Reproduces the final model from scratch with one command.' },
+  { path: '│   ├── predict.py', note: 'Batch or single-item inference.' },
+  { path: '│   └── weights.pt', meta: 'final checkpoint', note: 'The trained weights from the run reported in the evaluation.' },
+  { path: '├── notebooks/', note: 'Every number in the report traces back to a notebook.' },
+  { path: '│   ├── 01_baseline.ipynb', note: 'The simple model everything else is measured against.' },
+  { path: '│   ├── 02_experiments.ipynb', note: 'Every run, including the ones that did not work.' },
+  { path: '│   └── 03_evaluation.ipynb', note: 'Held-out results, slices and robustness checks.' },
+  { path: '├── api/', note: 'Optional: a FastAPI service so your product can call the model.' },
+  { path: '│   ├── app.py', meta: 'FastAPI', note: 'Typed endpoints with request validation.' },
+  { path: '│   └── Dockerfile', note: 'Runs the same way on your laptop and your servers.' },
+  { path: '├── report/', note: 'Written for decision-makers, not just engineers.' },
+  { path: '│   └── evaluation.pdf', meta: 'plain language', note: 'What works, what fails, and what we would do next.' },
+  { path: '└── data/', note: 'Exactly how the data was split, so results can be checked.' },
+  { path: '    └── splits.json', meta: 'train · val · held-out', note: 'Fixed splits: the held-out set is never touched during training.' },
+];
+
+export const promises = [
+  { value: '48h', label: 'Reply to every enquiry' },
+  { value: '100%', label: 'Of code and weights handed over' },
+  { value: '0', label: 'Lock-in or hosted dependencies' },
 ];
 
 // One entry per model. Each gets a page at /lab/<slug>; `art` picks the ASCII figure on its card.

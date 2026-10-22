@@ -1,0 +1,60 @@
+---
+import { handover, promises } from '../data/site';
+---
+
+<section class="section" id="handover">
+  <div class="wrap grid">
+    <div class="copy">
+      <p class="eyebrow mono">03 — What you get</p>
+      <h2 data-split>Everything you need.<br /><span class="dim">Nothing you can't run.</span></h2>
+      <p class="lede" data-reveal>At the end of a project you receive one folder. It reproduces every number in the report, runs on your machines, and doesn't depend on us. Hover over any file to see what it's for.</p>
+      <dl class="promises">
+        {promises.map((p) => (
+          <div data-reveal>
+            <dt class="num" data-count={p.value}>{p.value}</dt>
+            <dd class="mono">{p.label}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+
+    <div class="box glass" data-reveal>
+      <div class="bar mono"><span class="lights" aria-hidden="true"><i></i><i></i><i></i></span>~/handover <span class="faint">· {handover.length - 1} items</span></div>
+      <ul class="tree" id="tree">
+        {handover.map((f, i) => (
+          <li tabindex="0" data-note={f.note} class={i === 0 ? 'active' : ''}>
+            <span class="path">{f.path}</span>{f.meta && <span class="tag">{f.meta}</span>}
+          </li>
+        ))}
+      </ul>
+      <p class="note" aria-live="polite"><span class="mono">↳</span> <span id="treeNote">{handover[0].note}</span></p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .grid { display: grid; grid-template-columns: 1fr 1.05fr; gap: 72px; align-items: center; }
+  .grid > * { min-width: 0; }
+  .lede { font-size: 18px; max-width: 470px; margin-top: 28px; }
+  .promises { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 56px; max-width: 520px; }
+  .promises > div { padding-top: 18px; border-top: 1px solid var(--line); }
+  .num { font-size: clamp(36px, 3.6vw, 52px); letter-spacing: -.06em; line-height: 1; }
+  .promises dd { margin-top: 10px; color: var(--faint); font-size: 10px; line-height: 1.5; }
+
+  .box { overflow: hidden; }
+  .bar { display: flex; align-items: center; gap: 14px; padding: 14px 18px; border-bottom: 1px solid var(--line); color: var(--mute); font-size: 11px; text-transform: none; }
+  .faint { color: var(--faint); }
+  .lights { display: flex; gap: 6px; }
+  .lights i { width: 9px; height: 9px; border-radius: 50%; background: rgba(255, 255, 255, .14); }
+  .tree { padding: 12px 8px; font: 13px/1 var(--mono); }
+  .tree li { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 7px 12px; border-radius: 8px; color: var(--mute); white-space: pre; cursor: default;
+    transition: background .25s, color .25s; outline: none; }
+  .tree li:hover, .tree li:focus-visible, .tree li:global(.active) { background: var(--glass-hi); color: var(--text); }
+  .tag { font-size: 10px; color: var(--faint); white-space: nowrap; }
+  .tree li:hover .tag, .tree li:global(.active) .tag { color: var(--mute); }
+  .note { min-height: 64px; padding: 16px 20px; border-top: 1px solid var(--line); color: var(--text); font-size: 15px; display: flex; gap: 10px; align-items: baseline; }
+  .note .mono { color: var(--faint); }
+
+  @media (max-width: 1000px) { .grid { grid-template-columns: 1fr; gap: 48px; } }
+  @media (max-width: 560px) { .tree { font-size: 11px; } .tag { display: none; } .promises { gap: 10px; } }
+</style>

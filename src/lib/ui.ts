@@ -84,7 +84,21 @@ function palette() {
   dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });   // backdrop click
 }
 
+function fileTree() {
+  const note = document.getElementById('treeNote');
+  const items = [...document.querySelectorAll<HTMLElement>('#tree li')];
+  const pick = (li: HTMLElement) => {
+    items.forEach((x) => x.classList.toggle('active', x === li));
+    if (note) note.textContent = li.dataset.note ?? '';
+  };
+  items.forEach((li) => {
+    li.addEventListener('pointerenter', () => pick(li));
+    li.addEventListener('focus', () => pick(li));
+  });
+}
+
 export function initUi() {
+  fileTree();
   anchors();
   slideshow();
   copyEmail();

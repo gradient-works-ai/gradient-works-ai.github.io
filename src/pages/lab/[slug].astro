@@ -1,6 +1,5 @@
 ---
 import Base from '../../layouts/Base.astro';
-import Cursor from '../../components/Cursor.astro';
 import Header from '../../components/Header.astro';
 import Palette from '../../components/Palette.astro';
 import Footer from '../../components/Footer.astro';
@@ -15,7 +14,6 @@ const notify = `mailto:${site.email}?subject=${encodeURIComponent(`Notify me: ${
 ---
 
 <Base title={`${m.name} — Under the works · ${site.name}`} description={m.blurb}>
-  <Cursor />
   <Header />
   <Palette />
   <main class="uw">
@@ -27,10 +25,10 @@ const notify = `mailto:${site.email}?subject=${encodeURIComponent(`Notify me: ${
         <p class="lede" data-intro>{m.blurb}</p>
         <p class="lede note" data-intro>The repository goes public once the evaluation report is finished. We publish results, not demos.</p>
         <div class="ctas" data-intro>
-          <a class="btn btn-light" href={notify} data-magnetic>Notify me when it ships <span class="arrow">→</span></a>
+          <a class="btn btn-light" href={notify}>Notify me when it ships <span class="arrow">→</span></a>
           {m.repo
-            ? <a class="btn btn-glass" href={m.repo} target="_blank" rel="noopener" data-magnetic>View repo ↗</a>
-            : <a class="btn btn-glass" href="/#lab" data-magnetic>Back to the lab</a>}
+            ? <a class="btn btn-glass" href={m.repo} target="_blank" rel="noopener">View repo ↗</a>
+            : <a class="btn btn-glass" href="/#lab">Back to the lab</a>}
         </div>
       </div>
       <div class="figure" data-intro>

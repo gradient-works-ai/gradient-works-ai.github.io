@@ -6,7 +6,7 @@ import { plans } from '../data/site';
   <div class="wrap">
     <div class="head">
       <div>
-        <p class="eyebrow mono">05 — Pricing</p>
+        <p class="eyebrow mono">06 — Pricing</p>
         <h2 data-split>Clear pricing, and<br />two ways to work.</h2>
       </div>
       <p class="head-side" data-reveal>A fixed scope and a fixed price. If it turns out to be bigger, we'll tell you before we start, not after.</p>
@@ -20,7 +20,7 @@ import { plans } from '../data/site';
           </div>
           <p class="price">{p.price} <small>{p.unit}</small></p>
           <ul>{p.items.map((it) => <li><span class="mono">[x]</span>{it}</li>)}</ul>
-          <a class={`btn ${p.featured ? 'btn-light' : 'btn-glass'}`} href="#contact" data-scroll data-magnetic>{p.cta} <span class="arrow">→</span></a>
+          <a class={`btn ${p.featured ? 'btn-light' : 'btn-glass'}`} href="#contact" data-scroll>{p.cta} <span class="arrow">→</span></a>
         </article>
       ))}
     </div>

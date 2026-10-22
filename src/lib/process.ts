@@ -25,7 +25,7 @@ export async function setStep(i: number, instant = false) {
   current = i;
   const mine = ++token;
   items.forEach((li, j) => li.classList.toggle('active', j === i));
-  if (label) label.textContent = `${i + 1}/${data.length}`;
+  if (label) label.textContent = `${String(i + 1).padStart(2, '0')} / ${String(data.length).padStart(2, '0')}`;
 
   term.textContent = '';
   data.slice(0, i).forEach((s) => { line('cmd', s.cmd); s.out.forEach(outLine); });

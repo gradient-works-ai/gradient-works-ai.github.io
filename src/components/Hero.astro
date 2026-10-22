@@ -16,9 +16,12 @@ const slides = [
       <h1 data-split="intro">Teams building with machine learning <span class="dim">turn to us for research depth and honest evaluation.</span></h1>
       <p class="lede" data-intro>Gradient Works is an applied AI studio. We design, train and test custom models, and give you the numbers, including the ones you won't like.</p>
       <div class="ctas" data-intro>
-        <a class="btn btn-light" href="#contact" data-scroll data-magnetic>Work with us <span class="arrow">→</span></a>
-        <a class="btn btn-glass" href="#services" data-scroll data-magnetic>Our services</a>
+        <a class="btn btn-light" href="#contact" data-scroll>Work with us <span class="arrow">→</span></a>
+        <a class="btn btn-glass" href="#services" data-scroll>Our services</a>
       </div>
+      <ul class="trust mono" data-intro>
+        <li>Fixed price</li><li>Held-out tested</li><li>You own the code</li>
+      </ul>
     </div>
 
     <div class="show" data-intro>
@@ -59,6 +62,8 @@ const slides = [
   .lede { font-size: 18px; max-width: 480px; }
   .ctas { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 40px; }
 
+  .trust { display: flex; flex-wrap: wrap; gap: 8px 22px; margin-top: 34px; color: var(--faint); font-size: 11px; }
+  .trust li::before { content: "✓ "; color: #8ee6d1; }
   .stage { aspect-ratio: 16 / 10; overflow: hidden; border-radius: 24px; background: rgba(20, 19, 16, .5); }
   .slide { position: absolute; inset: 0; opacity: 0; transform: scale(1.03); transition: opacity 1s var(--ease), transform 1.4s var(--ease); }
   .slide:global(.on) { opacity: 1; transform: none; }

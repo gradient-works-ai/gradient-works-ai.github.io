@@ -82,18 +82,6 @@ function reveals() {
   });
 }
 
-function magnetic() {
-  qsa('[data-magnetic]').forEach((el) => {
-    const xTo = gsap.quickTo(el, 'x', { duration: 0.25, ease: 'power3.out' });
-    const yTo = gsap.quickTo(el, 'y', { duration: 0.25, ease: 'power3.out' });
-    el.addEventListener('pointermove', (e) => {
-      const r = el.getBoundingClientRect();
-      xTo((e.clientX - r.left - r.width / 2) * 0.18);
-      yTo((e.clientY - r.top - r.height / 2) * 0.25);
-    });
-    el.addEventListener('pointerleave', () => gsap.to(el, { x: 0, y: 0, duration: 0.5, ease: 'elastic.out(1, 0.5)', overwrite: true }));
-  });
-}
 
 function tilt() {
   qsa('[data-tilt]').forEach((el) => {
@@ -111,32 +99,6 @@ function tilt() {
   });
 }
 
-function cursor() {
-  const ring = document.getElementById('cRing'), dot = document.getElementById('cDot'), label = document.getElementById('cLabel');
-  if (!ring || !dot || !label) return;
-  document.documentElement.classList.add('has-cursor');
-  // Dot sits exactly on the pointer; the ring trails by a frame or two (lerp per tick, not a tween).
-  let px = innerWidth / 2, py = innerHeight / 2, rx = px, ry = py;
-  addEventListener('pointermove', (e) => {
-    px = e.clientX; py = e.clientY;
-    dot.style.transform = `translate3d(${px}px, ${py}px, 0)`;
-  }, { passive: true });
-  gsap.ticker.add(() => {
-    rx += (px - rx) * 0.4; ry += (py - ry) * 0.4;
-    ring.style.transform = `translate3d(${rx}px, ${ry}px, 0)`;
-  });
-  addEventListener('pointerdown', () => ring.classList.add('down'));
-  addEventListener('pointerup', () => ring.classList.remove('down'));
-  document.addEventListener('pointerover', (e) => {
-    const t = e.target as Element;
-    const labelled = t.closest<HTMLElement>('[data-cursor]');
-    ring.classList.toggle('label', !!labelled);
-    ring.classList.toggle('hover', !labelled && !!t.closest('a, button, summary, [role="option"], [data-magnetic]'));
-    label.textContent = labelled?.dataset.cursor ?? '';
-  });
-  document.documentElement.addEventListener('pointerleave', () => gsap.to([ring, dot], { opacity: 0, duration: 0.3 }));
-  document.documentElement.addEventListener('pointerenter', () => gsap.to([ring, dot], { opacity: 1, duration: 0.3 }));
-}
 
 function marquee(lenis: Lenis) {
   const track = document.getElementById('ticker');
@@ -150,23 +112,27 @@ function marquee(lenis: Lenis) {
 }
 
 function process() {
-  const n = stepCount();
   const rail = document.getElementById('rail');
   setStep(0, true);
-  const mm = gsap.matchMedia();
-  // Desktop: pin the figure and scrub through the steps.
-  mm.add('(min-width: 1001px) and (min-height: 760px)', () => {
-    ScrollTrigger.create({
-      trigger: '#procPin', start: 'top 110px', end: () => `+=${n * innerHeight * 0.55}`, pin: true, anticipatePin: 1,
-      onUpdate: (self) => {
-        setStep(Math.min(n - 1, Math.floor(self.progress * n)));
-        if (rail) rail.style.transform = `scaleY(${self.progress})`;
-      },
+  // No pinning: the page scrolls normally and whichever step crosses the middle of the screen is active.
+  qsa('#steps > li').forEach((li, i) => ScrollTrigger.create({
+    trigger: li, start: 'top 55%', end: 'bottom 55%',
+    onToggle: (self) => { if (self.isActive) setStep(i); },
+  }));
+  if (rail) gsap.to(rail, { scaleY: 1, ease: 'none', scrollTrigger: { trigger: '#steps', start: 'top 55%', end: 'bottom 55%', scrub: 0.3 } });
+}
+
+function countUp() {
+  qsa('[data-count]').forEach((el) => {
+    const m = /^(\d+)(.*)$/.exec(el.dataset.count ?? '');
+    if (!m) return;
+    const target = Number(m[1]), suffix = m[2], state = { v: 0 };
+    el.textContent = `0${suffix}`;
+    gsap.to(state, {
+      v: target, duration: 1.6, ease: 'power3.out',
+      scrollTrigger: { trigger: el, start: 'top 90%', once: true },
+      onUpdate: () => { el.textContent = `${Math.round(state.v)}${suffix}`; },
     });
-  });
-  // Smaller screens: each step activates as it scrolls into view.
-  mm.add('(max-width: 1000px), (max-height: 759px)', () => {
-    qsa('#steps > li').forEach((li, i) => ScrollTrigger.create({ trigger: li, start: 'top 70%', onEnter: () => setStep(i), onEnterBack: () => setStep(i) }));
   });
 }
 
@@ -212,9 +178,10 @@ export async function initMotion(reduce: boolean) {
   headings();
   reveals();
   process();
+  countUp();
   marquee(lenis);
   wordmarkDecode();
   scramble();
-  if (finePointer) { magnetic(); tilt(); cursor(); }
+  if (finePointer) tilt();
   ScrollTrigger.refresh();
 }
