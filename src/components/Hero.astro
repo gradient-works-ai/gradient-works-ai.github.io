@@ -1,0 +1,94 @@
+---
+import { stack } from '../data/site';
+
+const slides = [
+  { id: 'aEeg', tab: 'NeuroDial', cap: 'Classifying multi-channel EEG signals for medical research workflows' },
+  { id: 'aEval', tab: 'Evaluation', cap: 'Independent evaluation that tells you where a model fails, and why' },
+  { id: 'aVision', tab: 'Vision', cap: 'Computer vision prototypes for inspection and detection' },
+];
+---
+
+<section class="hero" id="top">
+  <canvas class="field" id="field" aria-hidden="true"></canvas>
+  <div class="wrap grid">
+    <div class="copy">
+      <p class="chip mono" data-intro><span class="pulse"></span>Taking on new projects</p>
+      <h1 data-split="intro">Teams building with machine learning <span class="dim">turn to us for research depth and honest evaluation.</span></h1>
+      <p class="lede" data-intro>Gradient Works is an applied AI studio. We design, train and test custom models, and give you the numbers, including the ones you won't like.</p>
+      <div class="ctas" data-intro>
+        <a class="btn btn-light" href="#contact" data-scroll data-magnetic>Work with us <span class="arrow">→</span></a>
+        <a class="btn btn-glass" href="#services" data-scroll data-magnetic>Our services</a>
+      </div>
+    </div>
+
+    <div class="show" data-intro>
+      <div class="stage glass" data-tilt>
+        {slides.map((s, i) => (
+          <div class={`slide${i === 0 ? ' on' : ''}`}>
+            <pre class="ascii" id={s.id} data-cols="92" aria-hidden="true"></pre>
+            <p class="cap">{s.cap}</p>
+          </div>
+        ))}
+        <span class="corner mono">fig. live</span>
+      </div>
+      <div class="tabs" role="tablist">
+        {slides.map((s, i) => <button class={`tab mono${i === 0 ? ' on' : ''}`} role="tab" aria-selected={i === 0}><i></i>{s.tab}</button>)}
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap stack" data-intro>
+    <span class="mono">Our stack</span>
+    <div class="ticker" aria-hidden="true">
+      <ul id="ticker">{[...stack, ...stack].map((s) => <li>{s}</li>)}</ul>
+    </div>
+  </div>
+  <p class="scroll-hint mono" data-intro aria-hidden="true">scroll <span>↓</span></p>
+</section>
+
+<style>
+  .hero { position: relative; min-height: 100svh; padding: 170px 0 56px; display: flex; flex-direction: column; justify-content: center; overflow: hidden; }
+  .field { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1;
+    mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, #000 30%, transparent 80%); -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, #000 30%, transparent 80%); }
+  .grid { display: grid; grid-template-columns: 1fr 1.05fr; gap: 64px; align-items: center; }
+  .chip { display: inline-flex; align-items: center; gap: 10px; padding: 9px 14px; border-radius: 30px; color: var(--mute); font-size: 11px;
+    background: var(--glass); box-shadow: inset 0 0 0 1px var(--line); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+  .pulse { width: 7px; height: 7px; border-radius: 50%; background: #8ee6d1; box-shadow: 0 0 0 0 rgba(142, 230, 209, .6); animation: ping 2.2s infinite; }
+  @keyframes ping { 70%, 100% { box-shadow: 0 0 0 9px rgba(142, 230, 209, 0); } }
+  h1 { font-size: clamp(40px, 4.5vw, 68px); line-height: 1.02; letter-spacing: -.055em; margin: 30px 0 28px; }
+  .lede { font-size: 18px; max-width: 480px; }
+  .ctas { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 40px; }
+
+  .stage { aspect-ratio: 16 / 10; overflow: hidden; border-radius: 24px; background: rgba(20, 19, 16, .5); }
+  .slide { position: absolute; inset: 0; opacity: 0; transform: scale(1.03); transition: opacity 1s var(--ease), transform 1.4s var(--ease); }
+  .slide:global(.on) { opacity: 1; transform: none; }
+  .slide pre { position: absolute; left: 0; right: 0; top: 46%; transform: translateY(-50%); }
+  .slide::after { content: ""; position: absolute; inset: 56% 0 0; background: linear-gradient(transparent, rgba(16, 15, 13, .92) 75%); pointer-events: none; }
+  .cap { position: absolute; z-index: 1; left: 28px; right: 28px; bottom: 24px; max-width: 440px; color: var(--text); font-size: clamp(17px, 1.5vw, 21px); line-height: 1.25; letter-spacing: -.03em; }
+  .corner { position: absolute; top: 18px; right: 20px; z-index: 2; color: var(--faint); font-size: 10px; }
+  .tabs { display: grid; grid-template-columns: repeat(3, 1fr); margin-top: 18px; }
+  .tab { position: relative; text-align: left; padding-top: 14px; font-size: 11px; color: var(--faint); transition: color .4s; }
+  .tab::before, .tab i { content: ""; position: absolute; top: 0; left: 0; height: 1px; }
+  .tab::before { right: 0; background: var(--line); }
+  .tab i { width: 0; background: var(--iri); }
+  .tab:global(.on) { color: var(--text); }
+  .tab:global(.on) i { animation: fill 7s linear forwards; }
+  @keyframes fill { to { width: 100%; } }
+
+  .stack { display: flex; align-items: center; gap: 48px; margin-top: 96px; }
+  .stack > .mono { color: var(--faint); flex: none; }
+  .ticker { flex: 1; overflow: hidden; mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); }
+  .ticker ul { display: flex; width: max-content; }
+  .ticker li { font-size: 26px; font-weight: 500; letter-spacing: -.045em; color: rgba(243, 241, 236, .3); white-space: nowrap; padding-right: 64px; }
+  .scroll-hint { position: absolute; left: 50%; bottom: 22px; translate: -50% 0; color: var(--faint); font-size: 10px; }
+  .scroll-hint span { display: inline-block; animation: bob 1.8s var(--ease) infinite; }
+  @keyframes bob { 50% { transform: translateY(4px); } }
+
+  @media (max-width: 1000px) {
+    .hero { padding-top: 130px; }
+    .grid { grid-template-columns: 1fr; gap: 56px; }
+    .stack { flex-direction: column; align-items: flex-start; gap: 18px; margin-top: 72px; }
+    .ticker { width: 100%; }
+    .scroll-hint { display: none; }
+  }
+</style>

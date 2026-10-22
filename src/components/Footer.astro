@@ -1,0 +1,67 @@
+---
+import { site, nav, mailto, wordmark } from '../data/site';
+---
+
+<footer class="ftr">
+  <div class="wrap">
+    <div class="top">
+      <div class="brand-col">
+        <a class="brand" href="#top" data-scroll><span class="iri">∇</span> Gradient Works</a>
+        <p>Applied AI research, model engineering and evaluation.</p>
+      </div>
+      <div class="cols">
+        <div>
+          <p class="mono">Navigate</p>
+          <ul>{nav.map((n) => <li><a href={`#${n.id}`} data-scroll>{n.label}</a></li>)}</ul>
+        </div>
+        <div>
+          <p class="mono">Connect</p>
+          <ul>
+            <li><a href={mailto}>Email</a></li>
+            <li><a href={site.github} target="_blank" rel="noopener">GitHub ↗</a></li>
+            <li><a href={site.author.url} target="_blank" rel="noopener">Portfolio ↗</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="founder glass">
+      <span class="mono">Founded by</span>
+      <a href={site.author.url} target="_blank" rel="noopener" data-cursor="Portfolio">
+        <span class="name">{site.author.name}</span>
+        <span class="mono url">{site.author.url.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '')} ↗</span>
+      </a>
+    </div>
+
+    <pre class="ascii wordmark" id="wordmark" data-cols="82" data-max="22" aria-label="Gradient Works">{wordmark}</pre>
+
+    <div class="bottom mono">
+      <span>© 2026 Gradient Works</span>
+      <span>Designed &amp; built by <a href={site.author.url} target="_blank" rel="noopener">{site.author.name}</a></span>
+      <button id="toTop" data-scramble>Back to top ↑</button>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .ftr { padding: 120px 0 36px; border-top: 1px solid var(--line); background: linear-gradient(transparent, rgba(0, 0, 0, .35)); }
+  .top { display: flex; justify-content: space-between; gap: 48px; flex-wrap: wrap; }
+  .brand { font-size: 30px; letter-spacing: -.05em; }
+  .brand-col p { margin-top: 12px; max-width: 280px; font-size: 14px; }
+  .cols { display: flex; gap: 80px; }
+  .cols .mono { color: var(--faint); font-size: 10px; margin-bottom: 18px; }
+  .cols li { padding: 4px 0; font-size: 15px; color: var(--mute); }
+  .cols a { transition: color .3s; } .cols a:hover { color: var(--text); }
+  .founder { margin-top: 80px; padding: 26px 30px; display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap; border-radius: 24px; }
+  .founder > .mono { color: var(--faint); font-size: 10px; }
+  .founder a { display: flex; align-items: baseline; gap: 18px; flex-wrap: wrap; }
+  .name { font-size: clamp(26px, 3.2vw, 40px); letter-spacing: -.05em; background: var(--iri); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .url { color: var(--mute); text-transform: none; transition: color .3s; }
+  .founder a:hover .url { color: var(--text); }
+  .wordmark { margin: 72px 0 0; color: rgba(243, 241, 236, .12); transition: color .8s var(--ease); }
+  .wordmark:hover { color: rgba(243, 241, 236, .4); }
+  .bottom { margin-top: 32px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 14px; color: var(--faint); font-size: 10px; }
+  .bottom a { color: var(--mute); } .bottom a:hover { color: var(--text); }
+  #toTop:hover { color: var(--text); }
+  @media (max-width: 700px) { .cols { gap: 48px; } }
+</style>

@@ -1,0 +1,27 @@
+---
+// Shown once per session; main.ts drives the counter and lifts it away.
+---
+
+<div class="pre" id="pre" aria-hidden="true">
+  <pre class="pre-art">{String.raw`██████████████
+ ██        ██
+  ██      ██
+   ██    ██
+    ██  ██
+     ████
+      ██`}</pre>
+  <p class="pre-line mono"><span>loading weights</span> <span id="preBar">[░░░░░░░░░░░░░░░░░░░░]</span> <span id="prePct">0%</span></p>
+</div>
+
+<style>
+  .pre { display: none; }
+  :global(html.motion) .pre {
+    position: fixed; inset: 0; z-index: 200; background: var(--bg); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 36px;
+    clip-path: inset(0); animation: pre-failsafe 0s 6s forwards;
+  }
+  @keyframes pre-failsafe { to { visibility: hidden; } }
+  .pre-art { font: 13px/1.15 var(--mono); background: var(--iri); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .pre-line { color: var(--faint); display: flex; gap: 12px; }
+  #preBar { color: var(--text); letter-spacing: 0; }
+  #prePct { width: 4ch; text-align: right; color: var(--text); }
+</style>

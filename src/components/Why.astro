@@ -1,0 +1,37 @@
+---
+import { reasons } from '../data/site';
+---
+
+<section class="section" id="why">
+  <div class="wrap why">
+    <div class="stick">
+      <p class="eyebrow mono">04 — Approach</p>
+      <h2 data-split>Why teams<br />work with us.</h2>
+      <pre class="loop" data-reveal aria-hidden="true">{String.raw`┌──────────┐    ┌──────────┐    ┌──────────┐
+│ research │───▶│  build   │───▶│   test   │
+└──────────┘    └──────────┘    └────┬─────┘
+     ▲                               │
+     └───────────  iterate  ◀────────┘`}</pre>
+    </div>
+    <ol class="list">
+      {reasons.map((r, i) => (
+        <li data-reveal>
+          <span class="mono">/0{i + 1}</span>
+          <div><h3>{r.title}</h3><p>{r.body}</p></div>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .why { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; }
+  .stick { position: sticky; top: 140px; align-self: start; }
+  .loop { margin-top: 48px; font: clamp(8px, 1vw, 12px)/1.3 var(--mono); color: var(--faint); }
+  .list li { display: grid; grid-template-columns: 56px 1fr; padding: 40px 0; border-top: 1px solid var(--line); }
+  .list li:last-child { border-bottom: 1px solid var(--line); }
+  .list .mono { color: var(--faint); padding-top: 8px; }
+  .list h3 { font-size: 24px; }
+  .list p { margin-top: 12px; max-width: 500px; }
+  @media (max-width: 900px) { .why { grid-template-columns: 1fr; gap: 32px; } .stick { position: static; } .loop { font-size: 2.2vw; } }
+</style>

@@ -1,0 +1,36 @@
+---
+import { faqs } from '../data/site';
+---
+
+<section class="section" id="faq">
+  <div class="wrap faq">
+    <div>
+      <p class="eyebrow mono">06 — FAQ</p>
+      <h2 data-split>Questions,<br />answered.</h2>
+    </div>
+    <div class="list" data-reveal>
+      {faqs.map((f) => (
+        <details>
+          <summary>{f.q}<span class="mono sign" aria-hidden="true"></span></summary>
+          <div class="ans"><p>{f.a}</p></div>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .faq { display: grid; grid-template-columns: 1fr 1.2fr; gap: 64px; }
+  details { border-top: 1px solid var(--line); }
+  details:last-child { border-bottom: 1px solid var(--line); }
+  summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; gap: 24px; align-items: center; padding: 26px 0; font-size: 19px; letter-spacing: -.02em; transition: color .3s; }
+  summary::-webkit-details-marker { display: none; }
+  summary:hover { color: #fff; }
+  .sign::before { content: "[+]"; color: var(--faint); }
+  details[open] .sign::before { content: "[–]"; color: var(--text); }
+  .ans { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .6s var(--ease); }
+  details[open] .ans { grid-template-rows: 1fr; }
+  .ans p { overflow: hidden; max-width: 600px; }
+  details[open] .ans p { padding-bottom: 26px; }
+  @media (max-width: 900px) { .faq { grid-template-columns: 1fr; gap: 36px; } }
+</style>

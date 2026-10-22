@@ -1,0 +1,43 @@
+---
+import { nav, site, mailto } from '../data/site';
+
+const commands = [
+  ...nav.map((n, i) => ({ label: `Go to ${n.label}`, hint: `0${i + 1}`, action: 'scroll', arg: `#${n.id}` })),
+  { label: 'Email Gradient Works', hint: '✉', action: 'href', arg: mailto },
+  { label: 'Copy email address', hint: '⧉', action: 'copy', arg: site.email },
+  { label: 'Open GitHub org', hint: '↗', action: 'open', arg: site.github },
+  { label: `Visit ${site.author.name}'s portfolio`, hint: '↗', action: 'open', arg: site.author.url },
+];
+---
+
+<dialog class="palette glass" id="palette" aria-label="Command menu">
+  <div class="pal-in">
+    <span class="mono">⌘</span>
+    <input id="palIn" placeholder="Type a command or search…" autocomplete="off" spellcheck="false" aria-controls="palList" />
+    <kbd class="mono">esc</kbd>
+  </div>
+  <ul id="palList" role="listbox">
+    {commands.map((c) => (
+      <li role="option" data-action={c.action} data-arg={c.arg}>
+        <span>{c.label}</span><span class="mono">{c.hint}</span>
+      </li>
+    ))}
+  </ul>
+  <p class="pal-foot mono">↑↓ navigate · ↵ select · esc close</p>
+</dialog>
+
+<style>
+  .palette { margin: 14vh auto auto; width: min(560px, calc(100% - 32px)); padding: 0; border: 0; color: var(--text); background: rgba(22, 21, 18, .72); overflow: hidden; }
+  .palette[open] { animation: pal-in .45s var(--ease); }
+  .palette::backdrop { background: rgba(5, 5, 4, .55); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+  @keyframes pal-in { from { opacity: 0; transform: translateY(-12px) scale(.98); filter: blur(6px); } }
+  .pal-in { display: flex; align-items: center; gap: 12px; padding: 18px 20px; border-bottom: 1px solid var(--line); color: var(--faint); }
+  input { flex: 1; background: none; border: 0; outline: 0; color: var(--text); font: 17px var(--sans); letter-spacing: -.02em; }
+  input::placeholder { color: var(--faint); }
+  kbd { padding: 4px 7px; border-radius: 6px; box-shadow: inset 0 0 0 1px var(--line); }
+  ul { padding: 8px; max-height: 50vh; overflow: auto; }
+  li { display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; border-radius: 12px; cursor: pointer; color: var(--mute); transition: background .2s, color .2s; }
+  li:global(.active) { background: var(--glass-hi); color: var(--text); }
+  li[hidden] { display: none; }
+  .pal-foot { padding: 12px 20px; border-top: 1px solid var(--line); color: var(--faint); font-size: 10px; }
+</style>
