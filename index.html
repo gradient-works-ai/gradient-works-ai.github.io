@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gradient Works — Applied AI research & builds</title>
+<meta name="description" content="Gradient Works builds, tests and evaluates custom AI models for teams that need them done properly. Research-backed, small-scope, honest timelines.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0b0d10; --panel: #12161b; --line: #222831; --text: #e8ecf1; --muted: #8b95a3;
+    --a: #7cf0c5; --b: #6aa8ff; --grad: linear-gradient(90deg, var(--a), var(--b));
+    --mono: "JetBrains Mono", ui-monospace, monospace;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font: 16px/1.6 Inter, system-ui, sans-serif; }
+  a { color: inherit; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 20px; }
+  .mono { font-family: var(--mono); }
+  .eyebrow { font: 500 12px var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--a); }
+  h1, h2, h3 { line-height: 1.15; letter-spacing: -.02em; }
+  h2 { font-size: clamp(28px, 4vw, 40px); margin: 10px 0 14px; }
+  .lead { color: var(--muted); max-width: 620px; }
+  section { padding: 88px 0; border-top: 1px solid var(--line); }
+  .btn { display: inline-block; padding: 12px 20px; border-radius: 8px; font-weight: 600; text-decoration: none; }
+  .btn-primary { background: var(--grad); color: #071014; }
+  .btn-ghost { border: 1px solid var(--line); }
+  .btn:focus-visible, a:focus-visible { outline: 2px solid var(--a); outline-offset: 3px; }
+
+  /* nav */
+  nav { position: sticky; top: 0; z-index: 10; background: rgba(11,13,16,.85); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+  nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .logo { font: 600 15px var(--mono); text-decoration: none; }
+  .logo span { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .links { display: flex; gap: 24px; font-size: 14px; color: var(--muted); }
+  .links a { text-decoration: none; } .links a:hover { color: var(--text); }
+  @media (max-width: 720px) { .links { display: none; } }
+
+  /* hero */
+  .hero { padding: 120px 0 96px; border: 0; position: relative; overflow: hidden; }
+  .hero::before { content: ""; position: absolute; inset: -40% -10% auto auto; width: 620px; height: 620px;
+    background: radial-gradient(circle, rgba(106,168,255,.18), transparent 60%); pointer-events: none; }
+  .hero h1 { font-size: clamp(38px, 7vw, 72px); max-width: 880px; margin: 16px 0 20px; }
+  .hero h1 em { font-style: normal; background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .cta { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 32px; }
+  .loss { margin-top: 56px; font: 13px var(--mono); color: var(--muted); }
+
+  /* grids */
+  .grid { display: grid; gap: 16px; margin-top: 40px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 24px; }
+  .card h3 { font-size: 18px; margin: 10px 0 8px; }
+  .card p, .card li { color: var(--muted); font-size: 15px; }
+  .card ul { padding-left: 18px; margin-top: 10px; }
+  .num { font: 500 12px var(--mono); color: var(--b); }
+
+  /* steps */
+  .steps { counter-reset: s; display: grid; gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; margin-top: 40px; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+  .steps div { background: var(--panel); padding: 24px; }
+  .steps div::before { counter-increment: s; content: "0" counter(s); font: 500 12px var(--mono); color: var(--a); }
+  .steps h3 { font-size: 16px; margin: 8px 0 6px; } .steps p { color: var(--muted); font-size: 14px; }
+
+  /* lab */
+  .tag { display: inline-block; font: 11px var(--mono); padding: 3px 8px; border-radius: 99px; border: 1px solid var(--line); color: var(--muted); }
+  .tag.live { color: var(--a); border-color: rgba(124,240,197,.4); }
+
+  /* pricing */
+  .price { font-size: 32px; font-weight: 700; margin: 8px 0 4px; }
+  .price small { font-size: 14px; color: var(--muted); font-weight: 400; }
+  .card.featured { border-color: rgba(124,240,197,.5); }
+
+  /* faq */
+  details { border-bottom: 1px solid var(--line); padding: 18px 0; max-width: 760px; }
+  summary { cursor: pointer; font-weight: 600; list-style: none; display: flex; justify-content: space-between; gap: 16px; }
+  summary::after { content: "+"; font-family: var(--mono); color: var(--a); }
+  details[open] summary::after { content: "−"; }
+  details p { color: var(--muted); margin-top: 10px; }
+
+  footer { border-top: 1px solid var(--line); padding: 32px 0; color: var(--muted); font-size: 14px; }
+  footer .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a class="logo" href="#">∇ <span>gradient.works</span></a>
+    <div class="links">
+      <a href="#services">Services</a><a href="#process">Process</a><a href="#lab">Lab</a>
+      <a href="#pricing">Pricing</a><a href="#faq">FAQ</a>
+    </div>
+    <a class="btn btn-ghost" href="#contact">Start a project</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <p class="eyebrow">Applied AI research studio</p>
+    <h1>Models that are <em>built, tested and measured</em>, not just demoed.</h1>
+    <p class="lead">Gradient Works designs, trains and evaluates custom machine learning systems for startups, labs and small teams. We read the research, run the experiments and give you the numbers, including the ones you won't like.</p>
+    <div class="cta">
+      <a class="btn btn-primary" href="#contact">Work with us</a>
+      <a class="btn btn-ghost" href="https://github.com/gradient-works-ai">See our models on GitHub →</a>
+    </div>
+    <p class="loss">epoch 42 · val_loss 0.071 ↓ · honest_baseline ✓ · overfitting ✗</p>
+  </div>
+</header>
+
+<section id="services">
+  <div class="wrap">
+    <p class="eyebrow">What we do</p>
+    <h2>Four ways we can help</h2>
+    <p class="lead">Every engagement starts small and has a defined deliverable. No vague "AI transformation".</p>
+    <div class="grid">
+      <div class="card"><span class="num">01</span><h3>Custom model builds</h3>
+        <p>From dataset to deployed model.</p>
+        <ul><li>Classification and regression on tabular data</li><li>Computer vision (detection, segmentation)</li><li>Time series and biosignals</li><li>Fine-tuned small language models</li></ul></div>
+      <div class="card"><span class="num">02</span><h3>Model testing & evaluation</h3>
+        <p>Find out whether the model you already have actually works.</p>
+        <ul><li>Benchmarks and held-out test design</li><li>Bias, drift and robustness checks</li><li>LLM evals and red-team prompt suites</li><li>Written report with reproducible notebooks</li></ul></div>
+      <div class="card"><span class="num">03</span><h3>Research & prototyping</h3>
+        <p>Turn a paper or an idea into something you can run.</p>
+        <ul><li>Literature reviews for your problem</li><li>Paper reproduction and baselines</li><li>Feasibility studies before you commit budget</li></ul></div>
+      <div class="card"><span class="num">04</span><h3>AI-native features</h3>
+        <p>Put a model inside your product properly.</p>
+        <ul><li>RAG over your own documents</li><li>Agents and workflow automation</li><li>Model APIs (FastAPI, Docker)</li><li>Data pipelines that feed them</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<section id="process">
+  <div class="wrap">
+    <p class="eyebrow">How we work</p>
+    <h2>Research discipline, product speed</h2>
+    <div class="steps">
+      <div><h3>Scope</h3><p>A free 30-minute call. We define the problem, the metric and what "good enough" means.</p></div>
+      <div><h3>Baseline</h3><p>The simplest model that could work, so every later gain is measured against something real.</p></div>
+      <div><h3>Iterate</h3><p>Experiments are tracked and shared weekly. You see the dead ends as well as the wins.</p></div>
+      <div><h3>Test</h3><p>Held-out evaluation, failure analysis and a plain-language report.</p></div>
+      <div><h3>Ship</h3><p>Code, weights, docs and a handover call. You own everything.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="lab">
+  <div class="wrap">
+    <p class="eyebrow">The lab</p>
+    <h2>Our own models</h2>
+    <p class="lead">Between client work we build open models and tools. Each one lives in its own repo under our GitHub org.</p>
+    <div class="grid">
+      <!-- Add a card per model repo as you ship it -->
+      <div class="card"><span class="tag">in progress</span><h3>NeuroDial</h3>
+        <p>EEG signal classification pipeline for medical research workflows.</p></div>
+      <div class="card"><span class="tag">planned</span><h3>Eval Harness</h3>
+        <p>A reusable test suite for classification and LLM models: metrics, slices and reports in one command.</p></div>
+      <div class="card"><span class="tag">planned</span><h3>Your problem here</h3>
+        <p>Have a dataset and a question? That's how most of our models start.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="pricing">
+  <div class="wrap">
+    <p class="eyebrow">Pricing</p>
+    <h2>Small, fixed, transparent</h2>
+    <p class="lead">Clear scope and a fixed price. If it turns out to be bigger, we'll tell you before we start.</p>
+    <div class="grid">
+      <div class="card"><h3>Model audit</h3><p class="price">$300 <small>fixed</small></p>
+        <p>An evaluation of your existing model or dataset, with a written report. About one week.</p></div>
+      <div class="card featured"><h3>Prototype sprint</h3><p class="price">$900 <small>from</small></p>
+        <p>A working model plus baseline comparison, test report and handover. Two to four weeks.</p></div>
+      <div class="card"><h3>Ongoing</h3><p class="price">$500 <small>/ month</small></p>
+        <p>Continuous experimentation, retraining and evaluation. Pause or stop any month.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap">
+    <p class="eyebrow">FAQ</p>
+    <h2>Questions</h2>
+    <details><summary>Do I need a lot of data?</summary><p>Not always. Part of scoping is checking whether your data can support the model you want. If it can't, we'll say so, and suggest pretrained models, augmentation or a smaller problem.</p></details>
+    <details><summary>Who owns the code and the model?</summary><p>You do. You get the full repository, weights and documentation at handover.</p></details>
+    <details><summary>Can you work with sensitive data?</summary><p>Yes, within limits. We can sign an NDA and work on anonymised or synthetic data. For regulated data such as patient records, we'll scope what's appropriate with you first.</p></details>
+    <details><summary>What if the model doesn't hit the target?</summary><p>You still get the experiments, the baselines and an honest write-up of why it didn't work. That is often worth more than a model that only looks good on paper.</p></details>
+    <details><summary>Do you do large production systems?</summary><p>We focus on prototypes, evaluation and well-scoped models. For large production systems we'll be upfront about fit and can work alongside your engineers.</p></details>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="wrap">
+    <p class="eyebrow">Contact</p>
+    <h2>Tell us about the problem</h2>
+    <p class="lead">Send us a few lines: what you're trying to predict or automate, what data you have and when you need it. We reply within 48 hours.</p>
+    <div class="cta">
+      <!-- TODO: replace with the studio email -->
+      <a class="btn btn-primary" href="mailto:hello@example.com?subject=Project%20enquiry">Email us</a>
+      <a class="btn btn-ghost" href="https://github.com/gradient-works-ai">GitHub</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span class="mono">∇ gradient.works</span>
+    <span>© 2026 Gradient Works</span>
+  </div>
+</footer>
+
+</body>
+</html>
