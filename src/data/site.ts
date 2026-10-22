@@ -9,7 +9,7 @@ export const site = {
 
 // Web3Forms access key for the project brief form (https://web3forms.com, free).
 // It's safe to publish: it can only send to the inbox it was created for. Empty = email fallback.
-export const formKey = '';
+export const formKey = 'a96f29f5-3287-4f7c-84bd-aae3c640b376';
 
 export const mailto = `mailto:${site.email}?subject=Project%20enquiry`;
 
