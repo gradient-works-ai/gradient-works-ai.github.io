@@ -1,34 +1,14 @@
 ---
-import Base from '../layouts/Base.astro';
+import Page from '../layouts/Page.astro';
 import Preloader from '../components/Preloader.astro';
-import Header from '../components/Header.astro';
-import Palette from '../components/Palette.astro';
 import Hero from '../components/Hero.astro';
-import Services from '../components/Services.astro';
-import Process from '../components/Process.astro';
-import Handover from '../components/Handover.astro';
-import Lab from '../components/Lab.astro';
-import Why from '../components/Why.astro';
-import Pricing from '../components/Pricing.astro';
-import Faq from '../components/Faq.astro';
+import Explore from '../components/Explore.astro';
 import Contact from '../components/Contact.astro';
-import Footer from '../components/Footer.astro';
 ---
 
-<Base>
-  <Preloader />
-  <Header />
-  <Palette />
-  <main>
-    <Hero />
-    <Services />
-    <Process />
-    <Handover />
-    <Lab />
-    <Why />
-    <Pricing />
-    <Faq />
-    <Contact />
-  </main>
-  <Footer />
-</Base>
+<Page>
+  <Preloader slot="before" />
+  <Hero />
+  <Explore />
+  <Contact />
+</Page>

@@ -1,0 +1,13 @@
+---
+import Page from '../layouts/Page.astro';
+import Contact from '../components/Contact.astro';
+---
+
+<Page title="Contact" description="Tell us about the problem and your data. We reply within 48 hours with an honest assessment of fit." class="contact-page">
+  <Contact />
+</Page>
+
+<style>
+  :global(main.contact-page) { min-height: 100svh; display: flex; align-items: center; padding-top: 60px; }
+  :global(main.contact-page > section) { width: 100%; }
+</style>

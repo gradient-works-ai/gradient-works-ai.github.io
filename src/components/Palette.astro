@@ -2,7 +2,8 @@
 import { nav, site, mailto } from '../data/site';
 
 const commands = [
-  ...nav.map((n, i) => ({ label: `Go to ${n.label}`, hint: `0${i + 1}`, action: 'scroll', arg: `#${n.id}` })),
+  { label: 'Go to Home', hint: '00', action: 'href', arg: '/' },
+  ...nav.map((n, i) => ({ label: `Go to ${n.label}`, hint: `0${i + 1}`, action: 'href', arg: n.href })),
   { label: 'Email Gradient Works', hint: '✉', action: 'href', arg: mailto },
   { label: 'Copy email address', hint: '⧉', action: 'copy', arg: site.email },
   { label: 'Open GitHub org', hint: '↗', action: 'open', arg: site.github },

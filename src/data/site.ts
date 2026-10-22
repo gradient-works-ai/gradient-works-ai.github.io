@@ -10,12 +10,11 @@ export const site = {
 export const mailto = `mailto:${site.email}?subject=Project%20enquiry`;
 
 export const nav = [
-  { id: 'services', label: 'Services' },
-  { id: 'process', label: 'Process' },
-  { id: 'lab', label: 'Lab' },
-  { id: 'pricing', label: 'Pricing' },
-  { id: 'faq', label: 'FAQ' },
-  { id: 'contact', label: 'Contact' },
+  { href: '/services/', label: 'Services', teaser: 'Four disciplines, one standard of rigour.', glyph: '┌─┐\n│▓│──▶\n└─┘' },
+  { href: '/process/', label: 'Process', teaser: 'From scoping call to handover in four weeks.', glyph: ' ∂L\n──  → 0\n ∂θ' },
+  { href: '/lab/', label: 'Lab', teaser: 'Open models we build between client projects.', glyph: '(o) (@)\n( ) (o)' },
+  { href: '/pricing/', label: 'Pricing', teaser: 'Fixed-price audits, sprints and retainers.', glyph: '$ ███▌\n$ ██▌\n$ █▌' },
+  { href: '/contact/', label: 'Contact', teaser: 'Tell us about the problem. Reply within 48h.', glyph: '[✉] →' },
 ];
 
 export const stack = ['PyTorch', 'Hugging Face', 'scikit-learn', 'FastAPI', 'Docker', 'Weights & Biases', 'ONNX', 'LangChain'];

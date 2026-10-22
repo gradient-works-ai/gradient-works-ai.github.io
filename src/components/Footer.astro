@@ -2,13 +2,13 @@
 import { site, nav, mailto } from '../data/site';
 import Logo from './Logo.astro';
 
-const home = Astro.url.pathname === '/';
+const showAsk = !['/', '/contact/'].includes(Astro.url.pathname);
 const portfolio = site.author.url.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '');
 ---
 
 <footer class="ftr" id="footer">
   <div class="wrap">
-    {!home && (
+    {showAsk && (
       <div class="cta-row">
         <h2 class="ask" data-split>Have a model worth building? <span class="dim">Let's talk.</span></h2>
         <a class="btn btn-light" href={mailto}>Start a project <span class="arrow">→</span></a>
@@ -23,7 +23,7 @@ const portfolio = site.author.url.replace(/^https?:\/\/(www\.)?/, '').replace(/\
       </div>
       <div>
         <p class="label mono">Navigate</p>
-        <ul>{nav.map((n) => <li><a href={`#${n.id}`} data-scroll>{n.label}</a></li>)}</ul>
+        <ul><li><a href="/">Home</a></li>{nav.map((n) => <li><a href={n.href}>{n.label}</a></li>)}</ul>
       </div>
       <div>
         <p class="label mono">Connect</p>

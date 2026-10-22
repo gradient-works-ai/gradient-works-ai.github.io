@@ -2,26 +2,27 @@
 import { nav } from '../data/site';
 import Logo from './Logo.astro';
 
-const home = Astro.url.pathname === '/';
+const path = Astro.url.pathname;
+const home = path === '/';
 ---
 
 <header class="hdr" id="hdr">
   <nav class="bar glass" aria-label="Main">
     <a class="brand" href={home ? '#top' : '/'} data-scroll={home || undefined}><Logo id="logo-hdr" size={19} /> Gradient Works</a>
     <ul class="links">
-      {nav.slice(0, 5).map((n) => <li><a href={`#${n.id}`} data-scroll data-scramble>{n.label}</a></li>)}
+      {nav.slice(0, 4).map((n) => <li><a href={n.href} class={path.startsWith(n.href) ? 'on' : undefined} aria-current={path.startsWith(n.href) ? 'page' : undefined} data-scramble>{n.label}</a></li>)}
     </ul>
     <div class="right">
       <button class="kbd" id="paletteBtn" aria-label="Open command menu" aria-haspopup="dialog">
         <span class="mono only-wide">⌘K</span><span class="mono only-narrow">Menu</span>
       </button>
-      <a class="btn btn-light btn-sm only-wide" href="#contact" data-scroll>Start a project</a>
+      <a class="btn btn-light btn-sm only-wide" href="/contact/">Start a project</a>
     </div>
   </nav>
 </header>
 
 <style>
-  .hdr { position: fixed; z-index: 50; top: 16px; left: 0; right: 0; display: flex; justify-content: center; padding: 0 16px; transition: transform .7s var(--ease); }
+  .hdr { view-transition-name: site-header; position: fixed; z-index: 50; top: 16px; left: 0; right: 0; display: flex; justify-content: center; padding: 0 16px; transition: transform .7s var(--ease); }
   .hdr:global(.hide) { transform: translateY(-140%); }
   .bar { width: 100%; max-width: 1080px; height: 60px; padding: 0 10px 0 22px; border-radius: 40px; display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 24px;
     background: rgba(18, 17, 15, .45); transition: background .5s var(--ease); }
@@ -29,7 +30,7 @@ const home = Astro.url.pathname === '/';
   .brand { font-size: 18px; letter-spacing: -.04em; display: flex; gap: 10px; align-items: center; }
   .links { display: flex; justify-content: center; gap: 30px; font-size: 14px; color: var(--mute); }
   .links a { transition: color .3s; display: inline-block; }
-  .links a:hover { color: var(--text); }
+  .links a:hover, .links a.on { color: var(--text); }
   .right { display: flex; gap: 8px; align-items: center; }
   .kbd { height: 38px; padding: 0 14px; border-radius: 30px; box-shadow: inset 0 0 0 1px var(--line); color: var(--mute); transition: color .3s, background .3s; }
   .kbd:hover { color: var(--text); background: var(--glass-hi); }

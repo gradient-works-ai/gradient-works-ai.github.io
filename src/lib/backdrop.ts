@@ -110,7 +110,7 @@ export function initBackdrop(reduce: boolean) {
   if (reduce) { draw(12); return; }
   let last = 0;
   const loop = (now: number) => {
-    if (now - last > 33) { last = now; draw(now / 1000); }
+    if (now - last > 33) { last = now; draw(((performance.timeOrigin + now) / 1000) % 3600); }
     requestAnimationFrame(loop);
   };
   requestAnimationFrame(loop);

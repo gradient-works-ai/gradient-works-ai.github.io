@@ -1,8 +1,5 @@
 ---
-import Base from '../../layouts/Base.astro';
-import Header from '../../components/Header.astro';
-import Palette from '../../components/Palette.astro';
-import Footer from '../../components/Footer.astro';
+import Page from '../../layouts/Page.astro';
 import { lab, site } from '../../data/site';
 
 export function getStaticPaths() {
@@ -13,13 +10,10 @@ const { m } = Astro.props;
 const notify = `mailto:${site.email}?subject=${encodeURIComponent(`Notify me: ${m.name}`)}`;
 ---
 
-<Base title={`${m.name} — Under the works · ${site.name}`} description={m.blurb}>
-  <Header />
-  <Palette />
-  <main class="uw">
+<Page title={`${m.name} — Under the works`} description={m.blurb} class="uw">
     <div class="wrap grid">
       <div class="copy">
-        <a class="back mono" href="/#lab" data-intro>← Back to the lab</a>
+        <a class="back mono" href="/lab/" data-intro>← Back to the lab</a>
         <p class="chip mono" data-intro><span class="pulse"></span>Under the works · {m.status}</p>
         <h1 data-split="intro">{m.name} <span class="dim">is under the works.</span></h1>
         <p class="lede" data-intro>{m.blurb}</p>
@@ -28,7 +22,7 @@ const notify = `mailto:${site.email}?subject=${encodeURIComponent(`Notify me: ${
           <a class="btn btn-light" href={notify}>Notify me when it ships <span class="arrow">→</span></a>
           {m.repo
             ? <a class="btn btn-glass" href={m.repo} target="_blank" rel="noopener">View repo ↗</a>
-            : <a class="btn btn-glass" href="/#lab">Back to the lab</a>}
+            : <a class="btn btn-glass" href="/lab/">Back to the lab</a>}
         </div>
       </div>
       <div class="figure" data-intro>
@@ -36,12 +30,10 @@ const notify = `mailto:${site.email}?subject=${encodeURIComponent(`Notify me: ${
         <p class="fig mono"><b>Fig. 00</b> — Training log for {m.name}. Illustrative, not live data.</p>
       </div>
     </div>
-  </main>
-  <Footer />
-</Base>
+</Page>
 
 <style>
-  .uw { min-height: 100svh; padding: 160px 0 110px; }
+  :global(main.uw) { min-height: 100svh; padding: 160px 0 110px; }
   .grid { display: grid; grid-template-columns: 1fr 1.1fr; gap: 64px; align-items: start; }
   .back { display: flex; width: fit-content; color: var(--faint); margin-bottom: 36px; transition: color .3s; }
   .back:hover { color: var(--text); }
@@ -55,5 +47,5 @@ const notify = `mailto:${site.email}?subject=${encodeURIComponent(`Notify me: ${
   .ctas { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 40px; }
   .panel { padding: 24px; overflow: hidden; }
   .figure, .copy { min-width: 0; }
-  @media (max-width: 1000px) { .uw { padding-top: 120px; } .grid { grid-template-columns: 1fr; gap: 48px; } }
+  @media (max-width: 1000px) { :global(main.uw) { padding-top: 120px; } .grid { grid-template-columns: 1fr; gap: 48px; } }
 </style>
