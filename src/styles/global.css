@@ -1,5 +1,5 @@
 :root {
-  --bg: #0a0908;
+  --bg: #060608;
   --text: #f3f1ec;
   --mute: rgba(243, 241, 236, .58);
   --faint: rgba(243, 241, 236, .32);
@@ -35,15 +35,11 @@ p { color: var(--mute); }
 .iri { background: var(--iri); -webkit-background-clip: text; background-clip: text; color: transparent; }
 
 /* ---------- ambient light + grain ---------- */
-.aurora { position: fixed; inset: 0; z-index: -2; overflow: hidden; pointer-events: none; }
-.aurora span { position: absolute; border-radius: 50%; filter: blur(110px); opacity: .5; will-change: transform; }
-.aurora span:nth-child(1) { width: 52vw; height: 52vw; left: -12vw; top: -18vw; background: #6b4a2b; animation: drift1 26s ease-in-out infinite alternate; }
-.aurora span:nth-child(2) { width: 46vw; height: 46vw; right: -14vw; top: 18vh; background: #3a3f7a; animation: drift2 32s ease-in-out infinite alternate; }
-.aurora span:nth-child(3) { width: 40vw; height: 40vw; left: 30vw; bottom: -22vw; background: #1f5a54; opacity: .38; animation: drift3 28s ease-in-out infinite alternate; }
-@keyframes drift1 { to { transform: translate(14vw, 10vh) scale(1.15); } }
-@keyframes drift2 { to { transform: translate(-16vw, 22vh) scale(.9); } }
-@keyframes drift3 { to { transform: translate(-12vw, -30vh) scale(1.2); } }
-.grain { position: fixed; inset: 0; z-index: 100; pointer-events: none; opacity: .07; mix-blend-mode: overlay;
+/* WebGL backdrop (src/lib/backdrop.ts). The gradient is the no-WebGL fallback; once the shader runs it paints over it. */
+#bg { position: fixed; inset: 0; z-index: -2; width: 100vw; height: 100vh; display: block; pointer-events: none;
+  background: radial-gradient(80% 60% at 70% 0%, rgba(159, 182, 255, .14), transparent 60%), radial-gradient(60% 50% at 10% 10%, rgba(244, 197, 143, .1), transparent 60%), var(--bg);
+  }
+.grain { position: fixed; inset: 0; z-index: 100; pointer-events: none; opacity: .045; mix-blend-mode: overlay;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
@@ -96,6 +92,3 @@ html.motion [data-split] { visibility: hidden; }
 .line { padding-bottom: .06em; }
 
 
-@media (prefers-reduced-motion: reduce) {
-  .aurora span { animation: none; }
-}

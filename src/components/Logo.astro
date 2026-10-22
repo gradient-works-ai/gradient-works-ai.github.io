@@ -1,0 +1,19 @@
+---
+// The Gradient Works mark: levels narrowing to a single point (a ∇ that descends to its minimum).
+interface Props { size?: number; id: string }
+const { size = 20, id } = Astro.props;
+---
+
+<svg class="logo" width={size} height={size} viewBox="12 14 40 42" aria-hidden="true">
+  <defs>
+    <linearGradient id={id} x1="12" y1="14" x2="50" y2="52" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#f4c58f" /><stop offset=".38" stop-color="#e8a3c9" /><stop offset=".72" stop-color="#9fb6ff" /><stop offset="1" stop-color="#8ee6d1" />
+    </linearGradient>
+  </defs>
+  <g fill={`url(#${id})`}>
+    <rect x="12" y="14" width="40" height="8" rx="4" />
+    <rect x="18.5" y="26" width="27" height="8" rx="4" />
+    <rect x="25" y="38" width="14" height="8" rx="4" />
+    <circle cx="32" cy="52" r="3.6" />
+  </g>
+</svg>

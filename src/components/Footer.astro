@@ -1,67 +1,96 @@
 ---
-import { site, nav, mailto, wordmark } from '../data/site';
+import { site, nav, mailto } from '../data/site';
+import Logo from './Logo.astro';
+
+const home = Astro.url.pathname === '/';
+const portfolio = site.author.url.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '');
 ---
 
-<footer class="ftr">
+<footer class="ftr" id="footer">
   <div class="wrap">
-    <div class="top">
-      <div class="brand-col">
-        <a class="brand" href="#top" data-scroll><span class="iri">∇</span> Gradient Works</a>
-        <p>Applied AI research, model engineering and evaluation.</p>
+    {!home && (
+      <div class="cta-row">
+        <h2 class="ask" data-split>Have a model worth building? <span class="dim">Let's talk.</span></h2>
+        <a class="btn btn-light" href={mailto}>Start a project <span class="arrow">→</span></a>
       </div>
-      <div class="cols">
-        <div>
-          <p class="mono">Navigate</p>
-          <ul>{nav.map((n) => <li><a href={`#${n.id}`} data-scroll>{n.label}</a></li>)}</ul>
-        </div>
-        <div>
-          <p class="mono">Connect</p>
-          <ul>
-            <li><a href={mailto}>Email</a></li>
-            <li><a href={site.github} target="_blank" rel="noopener">GitHub ↗</a></li>
-            <li><a href={site.author.url} target="_blank" rel="noopener">Portfolio ↗</a></li>
-          </ul>
-        </div>
+    )}
+
+    <div class="cols">
+      <div class="about">
+        <a class="brand" href="/"><Logo id="logo-ftr" size={24} /> Gradient Works</a>
+        <p>Applied AI research, model engineering and evaluation for startups, labs and small teams.</p>
+        <p class="status mono"><span class="pulse"></span>Taking on new projects</p>
+      </div>
+      <div>
+        <p class="label mono">Navigate</p>
+        <ul>{nav.map((n) => <li><a href={`#${n.id}`} data-scroll>{n.label}</a></li>)}</ul>
+      </div>
+      <div>
+        <p class="label mono">Connect</p>
+        <ul>
+          <li><a href={mailto}>Email</a></li>
+          <li><a href={site.github} target="_blank" rel="noopener">GitHub <span class="ext">↗</span></a></li>
+          <li><a href={site.author.url} target="_blank" rel="noopener">Portfolio <span class="ext">↗</span></a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="label mono">Studio</p>
+        <ul>
+          <li class="founder">Founded by<br /><a href={site.author.url} target="_blank" rel="noopener">{site.author.name} <span class="ext">↗</span></a></li>
+          <li class="time">Local time<br /><span id="ftrClock" class="mono">— IST</span></li>
+        </ul>
       </div>
     </div>
-
-    <div class="founder glass">
-      <span class="mono">Founded by</span>
-      <a href={site.author.url} target="_blank" rel="noopener">
-        <span class="name">{site.author.name}</span>
-        <span class="mono url">{site.author.url.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '')} ↗</span>
-      </a>
-    </div>
-
-    <pre class="ascii wordmark" id="wordmark" data-cols="82" data-max="22" aria-label="Gradient Works">{wordmark}</pre>
 
     <div class="bottom mono">
       <span>© 2026 Gradient Works</span>
-      <span>Designed &amp; built by <a href={site.author.url} target="_blank" rel="noopener">{site.author.name}</a></span>
-      <button id="toTop" data-scramble>Back to top ↑</button>
+      <span>Designed &amp; built by <a href={site.author.url} target="_blank" rel="noopener">{site.author.name}</a> · <a href={site.author.url} target="_blank" rel="noopener">{portfolio}</a></span>
+      <button id="toTop">Back to top ↑</button>
     </div>
   </div>
+
+  <div class="mark" id="mark" aria-hidden="true"><span id="markText">Gradient Works</span></div>
 </footer>
 
 <style>
-  .ftr { padding: 120px 0 36px; border-top: 1px solid var(--line); background: linear-gradient(transparent, rgba(0, 0, 0, .35)); }
-  .top { display: flex; justify-content: space-between; gap: 48px; flex-wrap: wrap; }
-  .brand { font-size: 30px; letter-spacing: -.05em; }
-  .brand-col p { margin-top: 12px; max-width: 280px; font-size: 14px; }
-  .cols { display: flex; gap: 80px; }
-  .cols .mono { color: var(--faint); font-size: 10px; margin-bottom: 18px; }
-  .cols li { padding: 4px 0; font-size: 15px; color: var(--mute); }
-  .cols a { transition: color .3s; } .cols a:hover { color: var(--text); }
-  .founder { margin-top: 80px; padding: 26px 30px; display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap; border-radius: 24px; }
-  .founder > .mono { color: var(--faint); font-size: 10px; }
-  .founder a { display: flex; align-items: baseline; gap: 18px; flex-wrap: wrap; }
-  .name { font-size: clamp(26px, 3.2vw, 40px); letter-spacing: -.05em; background: var(--iri); -webkit-background-clip: text; background-clip: text; color: transparent; }
-  .url { color: var(--mute); text-transform: none; transition: color .3s; }
-  .founder a:hover .url { color: var(--text); }
-  .wordmark { margin: 72px 0 0; color: rgba(243, 241, 236, .12); transition: color .8s var(--ease); }
-  .wordmark:hover { color: rgba(243, 241, 236, .4); }
-  .bottom { margin-top: 32px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 14px; color: var(--faint); font-size: 10px; }
-  .bottom a { color: var(--mute); } .bottom a:hover { color: var(--text); }
-  #toTop:hover { color: var(--text); }
-  @media (max-width: 700px) { .cols { gap: 48px; } }
+  .ftr { position: relative; margin-top: 40px; padding-top: 120px; overflow: hidden; border-top: 1px solid var(--line);
+    background: linear-gradient(180deg, transparent, rgba(0, 0, 0, .45) 70%); }
+
+  .cta-row { display: flex; justify-content: space-between; align-items: flex-end; gap: 40px; flex-wrap: wrap; padding-bottom: 88px; border-bottom: 1px solid var(--line); }
+  .ask { font-size: clamp(34px, 4.6vw, 64px); max-width: 760px; }
+
+  .cols { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr; gap: 40px; padding: 8px 0 72px; }
+  .cta-row + .cols { padding-top: 72px; }
+  .brand { font-size: 24px; letter-spacing: -.045em; display: inline-flex; align-items: center; gap: 12px; }
+  .about p { margin-top: 14px; max-width: 320px; font-size: 15px; }
+  .about .status { display: inline-flex; align-items: center; gap: 10px; color: var(--mute); font-size: 11px; }
+  .pulse { width: 7px; height: 7px; border-radius: 50%; background: #8ee6d1; animation: ping 2.2s infinite; }
+  @keyframes ping { 0% { box-shadow: 0 0 0 0 rgba(142, 230, 209, .55); } 70%, 100% { box-shadow: 0 0 0 9px rgba(142, 230, 209, 0); } }
+  .label { color: var(--faint); font-size: 10px; margin-bottom: 20px; }
+  .cols li { padding: 5px 0; font-size: 15px; color: var(--mute); line-height: 1.5; }
+  .cols a { color: var(--mute); background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat; transition: color .3s, background-size .4s var(--ease); }
+  .cols a:hover { color: var(--text); background-size: 100% 1px; }
+  .ext { font-size: 12px; }
+  .founder, .time { color: var(--faint) !important; font-size: 13px !important; }
+  .founder a { font-size: 15px; color: var(--text); }
+  .time .mono { color: var(--text); font-size: 13px; text-transform: none; }
+  .founder + .time { margin-top: 14px; }
+
+  .bottom { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; padding: 22px 0; border-top: 1px solid var(--line); color: var(--faint); font-size: 10px; }
+  .bottom a { color: var(--mute); transition: color .3s; }
+  .bottom a:hover, #toTop:hover { color: var(--text); }
+
+  /* Oversized wordmark, cropped by the bottom edge. A soft spotlight follows the pointer (vars set in JS). */
+  .mark { position: relative; margin-top: 8px; height: 12.4vw; display: flex; justify-content: center; user-select: none; }
+  .mark span { display: block; font-size: 15.6vw; font-weight: 500; letter-spacing: -.075em; line-height: .78; white-space: nowrap;
+    background:
+      radial-gradient(28vw circle at var(--mx, 50%) var(--my, 40%), rgba(244, 197, 143, .75), rgba(232, 163, 201, .45) 35%, rgba(159, 182, 255, .2) 60%, transparent 75%),
+      linear-gradient(180deg, rgba(243, 241, 236, .2), rgba(243, 241, 236, .02) 85%);
+    -webkit-background-clip: text; background-clip: text; color: transparent; }
+
+  @media (max-width: 900px) {
+    .cols { grid-template-columns: 1fr 1fr; gap: 40px 24px; }
+    .about { grid-column: 1 / -1; }
+  }
+  @media (max-width: 560px) { .bottom { flex-direction: column; align-items: flex-start; } }
 </style>

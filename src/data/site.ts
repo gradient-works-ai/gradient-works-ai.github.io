@@ -113,9 +113,3 @@ export const faqs = [
   { q: 'Do you build large production systems?', a: "We focus on prototypes, evaluation and well-scoped models. For large production systems we'll be upfront about fit and can work alongside your engineers." },
 ];
 
-export const wordmark = String.raw`
- ███  ████   ███  ████  █████ █████ █   █ █████     █   █  ███  ████  █  █   ████
-█     █   █ █   █ █   █   █   █     ██  █   █       █   █ █   █ █   █ █ █   █
-█ ███ ████  █████ █   █   █   ████  █ █ █   █       █ █ █ █   █ ████  ██     ███
-█   █ █  █  █   █ █   █   █   █     █  ██   █       ██ ██ █   █ █  █  █ █       █
- ███  █   █ █   █ ████  █████ █████ █   █   █       █   █  ███  █   █ █  █  ████`.slice(1);

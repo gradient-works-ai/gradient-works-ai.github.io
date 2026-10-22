@@ -3,9 +3,11 @@ import { initField } from '../lib/field';
 import { initUi } from '../lib/ui';
 import { initMotion } from '../lib/motion';
 import { initClick } from '../lib/click';
+import { initBackdrop } from '../lib/backdrop';
 
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+initBackdrop(reduce);
 initUi();
 initClick();
 initAscii(reduce);

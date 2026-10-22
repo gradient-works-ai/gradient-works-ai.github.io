@@ -97,7 +97,23 @@ function fileTree() {
   });
 }
 
+function footer() {
+  const clock = document.getElementById('ftrClock');
+  const tick = () => {
+    if (clock) clock.textContent = new Date().toLocaleTimeString('en-US', { timeZone: 'Asia/Kolkata', hour: 'numeric', minute: '2-digit' }) + ' IST';
+  };
+  tick(); setInterval(tick, 30_000);
+
+  const mark = document.getElementById('markText');
+  mark?.parentElement?.addEventListener('pointermove', (e) => {
+    const r = mark.getBoundingClientRect();
+    mark.style.setProperty('--mx', `${e.clientX - r.left}px`);
+    mark.style.setProperty('--my', `${e.clientY - r.top}px`);
+  });
+}
+
 export function initUi() {
+  footer();
   fileTree();
   anchors();
   slideshow();

@@ -136,28 +136,13 @@ function countUp() {
   });
 }
 
-function wordmarkDecode() {
-  const el = document.getElementById('wordmark');
+function footerMark() {
+  // Animated as one piece: transforming individual letters breaks background-clip: text in Chromium.
+  const el = document.getElementById('markText');
   if (!el) return;
-  const original = el.textContent ?? '';
-  const noise = '░▒▓';
-  ScrollTrigger.create({
-    trigger: el, start: 'top 92%', once: true,
-    onEnter: () => {
-      const state = { p: 0 };
-      gsap.to(state, {
-        p: 1, duration: 1.8, ease: 'power2.out',
-        onUpdate: () => {
-          // columns left of the sweep are resolved; just right of it they flicker
-          el.textContent = original.split('\n').map((row) => [...row].map((ch, x) => {
-            const edge = state.p * (row.length + 12) - x;
-            if (edge > 12 || ch === ' ') return edge > 0 ? ch : ' ';
-            return edge > 0 ? noise[(Math.random() * 3) | 0] : ' ';
-          }).join('')).join('\n');
-        },
-        onComplete: () => { el.textContent = original; },
-      });
-    },
+  gsap.from(el, {
+    yPercent: 45, opacity: 0, duration: 1.6, ease: 'expo.out',
+    scrollTrigger: { trigger: '#mark', start: 'top 100%', once: true },
   });
 }
 
@@ -180,7 +165,7 @@ export async function initMotion(reduce: boolean) {
   process();
   countUp();
   marquee(lenis);
-  wordmarkDecode();
+  footerMark();
   scramble();
   if (finePointer) tilt();
   ScrollTrigger.refresh();
