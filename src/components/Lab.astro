@@ -16,7 +16,7 @@ import { lab, site } from '../data/site';
     </div>
     <div class="work">
       {lab.map((m) => (
-        <a class="item" href={m.href} target="_blank" rel="noopener" data-reveal data-cursor="View repo">
+        <a class="item" href={`/lab/${m.slug}/`} data-reveal data-cursor="View model">
           <div class="media glass" data-tilt><pre class="ascii" id={m.art} data-cols="64" data-fit=".74" aria-hidden="true"></pre></div>
           <div class="meta"><h3>{m.name}</h3><span class="mono">{m.meta}</span></div>
         </a>

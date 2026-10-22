@@ -4,7 +4,7 @@ export function initField(reduce: boolean) {
   const ctx = cv?.getContext('2d');
   if (!cv || !ctx) return;
 
-  const ramp = ' .·:-=+*#%@', CW = 11, CH = 20, BUCKETS = 8;
+  const ramp = ' .·:-=+*#%@', CW = 13, CH = 22, BUCKETS = 8;
   let W = 0, H = 0, cols = 0, rows = 0, on = true;
   let mx = -1e4, my = -1e4, sx = -1e4, sy = -1e4;
 
@@ -29,7 +29,7 @@ export function initField(reduce: boolean) {
       const d = Math.hypot(px - sx, py - sy) / 170;
       const ripple = Math.exp(-d * d) * (0.65 + 0.35 * Math.sin(d * 9 - t * 5));
       n += ripple * 0.65;
-      if (n < 0.2) continue;
+      if (n < 0.24) continue;
       const ch = ramp[Math.min(ramp.length - 1, Math.floor(n * ramp.length))];
       buckets[Math.min(BUCKETS - 1, Math.floor(n * BUCKETS))].push([ch, px, py]);
     }
@@ -49,7 +49,7 @@ export function initField(reduce: boolean) {
   if (reduce) { draw(0); return; }
   let last = 0;
   const loop = (now: number) => {
-    if (on && now - last > 33) { last = now; draw(now / 1000); }
+    if (on && now - last > 42) { last = now; draw(now / 1000); }
     requestAnimationFrame(loop);
   };
   requestAnimationFrame(loop);

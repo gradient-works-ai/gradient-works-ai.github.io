@@ -1,0 +1,61 @@
+---
+import Base from '../../layouts/Base.astro';
+import Cursor from '../../components/Cursor.astro';
+import Header from '../../components/Header.astro';
+import Palette from '../../components/Palette.astro';
+import Footer from '../../components/Footer.astro';
+import { lab, site } from '../../data/site';
+
+export function getStaticPaths() {
+  return lab.map((m) => ({ params: { slug: m.slug }, props: { m } }));
+}
+
+const { m } = Astro.props;
+const notify = `mailto:${site.email}?subject=${encodeURIComponent(`Notify me: ${m.name}`)}`;
+---
+
+<Base title={`${m.name} — Under the works · ${site.name}`} description={m.blurb}>
+  <Cursor />
+  <Header />
+  <Palette />
+  <main class="uw">
+    <div class="wrap grid">
+      <div class="copy">
+        <a class="back mono" href="/#lab" data-intro>← Back to the lab</a>
+        <p class="chip mono" data-intro><span class="pulse"></span>Under the works · {m.status}</p>
+        <h1 data-split="intro">{m.name} <span class="dim">is under the works.</span></h1>
+        <p class="lede" data-intro>{m.blurb}</p>
+        <p class="lede note" data-intro>The repository goes public once the evaluation report is finished. We publish results, not demos.</p>
+        <div class="ctas" data-intro>
+          <a class="btn btn-light" href={notify} data-magnetic>Notify me when it ships <span class="arrow">→</span></a>
+          {m.repo
+            ? <a class="btn btn-glass" href={m.repo} target="_blank" rel="noopener" data-magnetic>View repo ↗</a>
+            : <a class="btn btn-glass" href="/#lab" data-magnetic>Back to the lab</a>}
+        </div>
+      </div>
+      <div class="figure" data-intro>
+        <div class="panel glass" data-tilt><pre class="ascii" id="aBuild" data-cols="72" data-model={m.slug} aria-hidden="true"></pre></div>
+        <p class="fig mono"><b>Fig. 00</b> — Training log for {m.name}. Illustrative, not live data.</p>
+      </div>
+    </div>
+  </main>
+  <Footer />
+</Base>
+
+<style>
+  .uw { min-height: 100svh; padding: 160px 0 110px; }
+  .grid { display: grid; grid-template-columns: 1fr 1.1fr; gap: 64px; align-items: start; }
+  .back { display: flex; width: fit-content; color: var(--faint); margin-bottom: 36px; transition: color .3s; }
+  .back:hover { color: var(--text); }
+  .chip { display: inline-flex; align-items: center; gap: 10px; padding: 9px 14px; border-radius: 30px; color: var(--mute); font-size: 11px;
+    background: var(--glass); box-shadow: inset 0 0 0 1px var(--line); }
+  .pulse { width: 7px; height: 7px; border-radius: 50%; background: #f4c58f; animation: ping 2.2s infinite; }
+  @keyframes ping { 0% { box-shadow: 0 0 0 0 rgba(244, 197, 143, .6); } 70%, 100% { box-shadow: 0 0 0 9px rgba(244, 197, 143, 0); } }
+  h1 { font-size: clamp(42px, 5vw, 72px); line-height: 1.02; letter-spacing: -.055em; margin: 28px 0 26px; }
+  .lede { font-size: 18px; max-width: 500px; }
+  .note { margin-top: 14px; font-size: 15px; color: var(--faint); }
+  .ctas { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 40px; }
+  .panel { padding: 24px; overflow: hidden; }
+  .figure, .copy { min-width: 0; }
+  @media (max-width: 1000px) { .uw { padding-top: 120px; } .grid { grid-template-columns: 1fr; gap: 48px; } }
+</style>

@@ -2,10 +2,12 @@ import { initAscii } from '../lib/ascii';
 import { initField } from '../lib/field';
 import { initUi } from '../lib/ui';
 import { initMotion } from '../lib/motion';
+import { initClick } from '../lib/click';
 
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 initUi();
+initClick();
 initAscii(reduce);
 initField(reduce);
 initMotion(reduce);

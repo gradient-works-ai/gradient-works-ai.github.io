@@ -55,10 +55,13 @@ export const steps = [
   },
 ];
 
-// Add an entry per model repo as it ships; `art` picks the ASCII renderer.
+// One entry per model. Each gets a page at /lab/<slug>; `art` picks the ASCII figure on its card.
+// Set `repo` once the model is public and the page will link to it.
 export const lab = [
-  { name: 'NeuroDial', meta: 'EEG classification · In progress', art: 'aHead', href: site.github },
-  { name: 'Eval Harness', meta: 'Model testing toolkit · Planned', art: 'aBars', href: site.github },
+  { slug: 'neurodial', name: 'NeuroDial', meta: 'EEG classification · In progress', status: 'Training', art: 'aHead', repo: '',
+    blurb: 'An EEG signal classification pipeline for medical research workflows: preprocessing, channel-aware models and a clinician-readable evaluation report.' },
+  { slug: 'eval-harness', name: 'Eval Harness', meta: 'Model testing toolkit · Planned', status: 'Designing', art: 'aBars', repo: '',
+    blurb: 'A reusable test suite for classification and LLM models. Metrics, data slices, robustness checks and a written report from one command.' },
 ];
 
 export const reasons = [

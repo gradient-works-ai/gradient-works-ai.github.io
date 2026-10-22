@@ -250,6 +250,41 @@ export function initAscii(reduce: boolean) {
     };
   });
 
+  // Training log for the "under the works" pages: loss curves plotted epoch by epoch, then restart.
+  add('aBuild', (el) => {
+    const C = 72, R = 26, EPOCHS = 120, model = el.dataset.model ?? 'model';
+    const ox = 7, oy = 16, W = 58, H = 11;
+    const noise = Array.from({ length: EPOCHS }, () => Math.random() - 0.5);
+    const train = (e: number) => 0.18 + 1.05 * Math.exp(-e / 26) + noise[e] * 0.03;
+    const val = (e: number) => 0.27 + 0.95 * Math.exp(-e / 30) + Math.max(0, e - 85) * 0.0018 + noise[(e * 7) % EPOCHS] * 0.05;
+    const yOf = (v: number) => oy - Math.round(Math.min(1, v / 1.3) * H);
+    return {
+      active: () => true,
+      draw(t) {
+        const g = grid(C, R), e = Math.floor((t * 7) % (EPOCHS + 20));   // short hold at the end of each run
+        const done = Math.min(e, EPOCHS - 1);
+        put(g, 1, 0, `$ gw train --model ${model} --epochs ${EPOCHS}`, 1);
+        put(g, 1, 2, 'LOSS', 2); put(g, ox - 4, yOf(1.3), '1.3', 2); put(g, ox - 4, yOf(0.65), '.65', 2); put(g, ox - 2, oy, '0', 2);
+        for (let y = yOf(1.3); y <= oy; y++) put(g, ox, y, '│', 2);
+        put(g, ox, oy, '└' + '─'.repeat(W), 2);
+        put(g, ox + W - 6, oy + 1, 'EPOCH', 2);
+        for (let x = 0; x < W; x++) {
+          const ep = Math.round((x / (W - 1)) * (EPOCHS - 1));
+          if (ep > done) break;
+          put(g, ox + 1 + x, yOf(val(ep)), '·', 2);
+          put(g, ox + 1 + x, yOf(train(ep)), '*', 1);
+        }
+        put(g, ox + 2, yOf(1.3), '* train   · val', 2);
+        const pct = Math.round(((done + 1) / EPOCHS) * 100), bar = Math.round(pct / 4);
+        put(g, 1, oy + 3, `epoch ${String(done + 1).padStart(3, '0')}/${EPOCHS}  [${'█'.repeat(bar)}${'░'.repeat(25 - bar)}] ${String(pct).padStart(3)}%`, 1);
+        put(g, 1, oy + 5, `train_loss ${train(done).toFixed(3)}   val_loss ${val(done).toFixed(3)}   lr 3e-4`, 0);
+        if (done > 85) put(g, 1, oy + 7, '! val_loss rising: early stopping candidate', 1);
+        else put(g, 1, oy + 7, '· checkpoint saved every 10 epochs', 2);
+        out(el, g);
+      },
+    };
+  });
+
   fitAscii();
   addEventListener('resize', fitAscii);
   document.fonts?.ready.then(fitAscii);

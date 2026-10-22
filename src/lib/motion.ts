@@ -84,14 +84,14 @@ function reveals() {
 
 function magnetic() {
   qsa('[data-magnetic]').forEach((el) => {
-    const xTo = gsap.quickTo(el, 'x', { duration: 0.7, ease: 'elastic.out(1, 0.4)' });
-    const yTo = gsap.quickTo(el, 'y', { duration: 0.7, ease: 'elastic.out(1, 0.4)' });
+    const xTo = gsap.quickTo(el, 'x', { duration: 0.25, ease: 'power3.out' });
+    const yTo = gsap.quickTo(el, 'y', { duration: 0.25, ease: 'power3.out' });
     el.addEventListener('pointermove', (e) => {
       const r = el.getBoundingClientRect();
-      xTo((e.clientX - r.left - r.width / 2) * 0.28);
-      yTo((e.clientY - r.top - r.height / 2) * 0.38);
+      xTo((e.clientX - r.left - r.width / 2) * 0.18);
+      yTo((e.clientY - r.top - r.height / 2) * 0.25);
     });
-    el.addEventListener('pointerleave', () => { xTo(0); yTo(0); });
+    el.addEventListener('pointerleave', () => gsap.to(el, { x: 0, y: 0, duration: 0.5, ease: 'elastic.out(1, 0.5)', overwrite: true }));
   });
 }
 
@@ -115,11 +115,16 @@ function cursor() {
   const ring = document.getElementById('cRing'), dot = document.getElementById('cDot'), label = document.getElementById('cLabel');
   if (!ring || !dot || !label) return;
   document.documentElement.classList.add('has-cursor');
-  const rx = gsap.quickTo(ring, 'x', { duration: 0.55, ease: 'power3' }), ry = gsap.quickTo(ring, 'y', { duration: 0.55, ease: 'power3' });
-  const dx = gsap.quickTo(dot, 'x', { duration: 0.12, ease: 'power3' }), dy = gsap.quickTo(dot, 'y', { duration: 0.12, ease: 'power3' });
-  gsap.set([ring, dot], { x: innerWidth / 2, y: innerHeight / 2 });
-
-  addEventListener('pointermove', (e) => { rx(e.clientX); ry(e.clientY); dx(e.clientX); dy(e.clientY); }, { passive: true });
+  // Dot sits exactly on the pointer; the ring trails by a frame or two (lerp per tick, not a tween).
+  let px = innerWidth / 2, py = innerHeight / 2, rx = px, ry = py;
+  addEventListener('pointermove', (e) => {
+    px = e.clientX; py = e.clientY;
+    dot.style.transform = `translate3d(${px}px, ${py}px, 0)`;
+  }, { passive: true });
+  gsap.ticker.add(() => {
+    rx += (px - rx) * 0.4; ry += (py - ry) * 0.4;
+    ring.style.transform = `translate3d(${rx}px, ${ry}px, 0)`;
+  });
   addEventListener('pointerdown', () => ring.classList.add('down'));
   addEventListener('pointerup', () => ring.classList.remove('down'));
   document.addEventListener('pointerover', (e) => {

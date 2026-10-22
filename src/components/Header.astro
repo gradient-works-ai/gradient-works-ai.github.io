@@ -1,10 +1,12 @@
 ---
 import { nav } from '../data/site';
+
+const home = Astro.url.pathname === '/';
 ---
 
 <header class="hdr" id="hdr">
   <nav class="bar glass" aria-label="Main">
-    <a class="brand" href="#top" data-scroll><span class="tri iri">∇</span> Gradient Works</a>
+    <a class="brand" href={home ? '#top' : '/'} data-scroll={home || undefined}><span class="tri iri">∇</span> Gradient Works</a>
     <ul class="links">
       {nav.slice(0, 5).map((n) => <li><a href={`#${n.id}`} data-scroll data-scramble>{n.label}</a></li>)}
     </ul>

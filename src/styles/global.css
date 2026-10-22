@@ -43,10 +43,9 @@ p { color: var(--mute); }
 @keyframes drift1 { to { transform: translate(14vw, 10vh) scale(1.15); } }
 @keyframes drift2 { to { transform: translate(-16vw, 22vh) scale(.9); } }
 @keyframes drift3 { to { transform: translate(-12vw, -30vh) scale(1.2); } }
-.grain { position: fixed; inset: -50%; z-index: 100; pointer-events: none; opacity: .07; mix-blend-mode: overlay;
+.grain { position: fixed; inset: 0; z-index: 100; pointer-events: none; opacity: .07; mix-blend-mode: overlay;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  animation: grain 1.2s steps(6) infinite; }
-@keyframes grain { 0%, 100% { transform: translate(0, 0); } 20% { transform: translate(-3%, 2%); } 40% { transform: translate(2%, -4%); } 60% { transform: translate(-4%, -1%); } 80% { transform: translate(3%, 3%); } }
+}
 
 /* ---------- glass ---------- */
 .glass {
@@ -61,8 +60,9 @@ p { color: var(--mute); }
 [data-tilt] { transform-style: preserve-3d; will-change: transform; }
 
 /* ---------- buttons ---------- */
+.btn:active, .btn.pressed { scale: .94; transition-duration: .06s; }
 .btn { position: relative; display: inline-flex; align-items: center; justify-content: center; gap: 10px; height: 48px; padding: 0 24px; border-radius: 40px;
-  font-size: 14px; font-weight: 500; letter-spacing: -.01em; white-space: nowrap; transition: background .4s var(--ease), box-shadow .4s var(--ease); }
+  font-size: 14px; font-weight: 500; letter-spacing: -.01em; white-space: nowrap; transition: background .4s var(--ease), box-shadow .4s var(--ease), scale .18s var(--ease); }
 .btn-light { background: var(--text); color: var(--bg); }
 .btn-light:hover { box-shadow: 0 0 0 6px rgba(243, 241, 236, .08), 0 12px 40px -8px rgba(243, 241, 236, .35); }
 .btn-glass { background: var(--glass-hi); box-shadow: inset 0 0 0 1px var(--line); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
@@ -101,9 +101,9 @@ html.has-cursor, html.has-cursor a, html.has-cursor button, html.has-cursor summ
 html.has-cursor .cursor { display: block; position: fixed; inset: 0; z-index: 90; pointer-events: none; }
 .c-dot, .c-ring { position: fixed; left: 0; top: 0; border-radius: 50%; translate: -50% -50%; }
 .c-dot { width: 6px; height: 6px; background: var(--text); mix-blend-mode: difference; }
-.c-ring { width: 38px; height: 38px; display: grid; place-items: center; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .28);
-  backdrop-filter: blur(3px) saturate(160%); -webkit-backdrop-filter: blur(3px) saturate(160%);
-  transition: width .5s var(--ease), height .5s var(--ease), background .4s, box-shadow .4s; }
+.c-dot, .c-ring { will-change: transform; }
+.c-ring { width: 38px; height: 38px; display: grid; place-items: center; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .3);
+  transition: width .35s var(--ease), height .35s var(--ease), background .3s, box-shadow .3s, scale .15s; }
 .c-ring.hover { width: 64px; height: 64px; background: rgba(255, 255, 255, .06); }
 .c-ring.label { width: 96px; height: 96px; background: rgba(243, 241, 236, .9); box-shadow: none; }
 .c-label { font: 11px var(--mono); text-transform: uppercase; letter-spacing: .04em; color: var(--bg); opacity: 0; transition: opacity .3s; text-align: center; }
@@ -111,5 +111,5 @@ html.has-cursor .cursor { display: block; position: fixed; inset: 0; z-index: 90
 .c-ring.down { scale: .85; }
 
 @media (prefers-reduced-motion: reduce) {
-  .aurora span, .grain { animation: none; }
+  .aurora span { animation: none; }
 }
