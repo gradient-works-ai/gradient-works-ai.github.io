@@ -4,11 +4,13 @@ import { initUi } from '../lib/ui';
 import { initMotion } from '../lib/motion';
 import { initClick } from '../lib/click';
 import { initBackdrop } from '../lib/backdrop';
+import { initForm } from '../lib/form';
 
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 initBackdrop(reduce);
 initUi();
+initForm();
 initClick();
 initAscii(reduce);
 initField(reduce);

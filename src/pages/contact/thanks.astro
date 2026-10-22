@@ -1,0 +1,22 @@
+---
+import Page from '../../layouts/Page.astro';
+import { site } from '../../data/site';
+---
+
+<Page title="Brief received" description="Thanks for your project brief." class="thanks">
+  <section class="wrap">
+    <pre class="tick" aria-hidden="true">{String.raw`   ╭─────╮
+   │  ✓  │
+   ╰─────╯`}</pre>
+    <h1>Brief received.</h1>
+    <p>Thanks. It's in {site.author.name}'s inbox, and you'll hear back within 48 hours.</p>
+    <a class="btn btn-light" href="/">Back to home <span class="arrow">→</span></a>
+  </section>
+</Page>
+
+<style>
+  :global(main.thanks) { min-height: 100svh; display: grid; place-items: center; text-align: center; padding: 140px 0 80px; }
+  .tick { font: 16px/1.2 var(--mono); color: #8ee6d1; }
+  h1 { font-size: clamp(40px, 5vw, 64px); letter-spacing: -.05em; margin: 20px 0 14px; }
+  p { max-width: 440px; margin: 0 auto 32px; }
+</style>

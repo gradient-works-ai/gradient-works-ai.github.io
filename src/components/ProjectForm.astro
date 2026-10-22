@@ -1,0 +1,202 @@
+---
+import { site } from '../data/site';
+
+// Without JS the form posts straight to FormSubmit and lands on /contact/thanks/.
+const endpoint = `https://formsubmit.co/${site.email}`;
+const thanks = new URL('/contact/thanks/', Astro.site).href;
+
+const work = ['Custom model build', 'Testing & evaluation', 'Research & prototyping', 'AI-native feature', 'Not sure yet'];
+const data = ['Yes, labelled', 'Yes, unlabelled', 'Not yet', 'Not sure'];
+const engagement = ['Model audit', 'Project', 'Retainer', 'Not sure yet'];
+const budget = ['Under $500', '$500 – $1k', '$1k – $3k', '$3k – $10k', '$10k+', 'Not sure yet'];
+const timeline = ['As soon as possible', 'Within a month', '1–3 months', 'Flexible'];
+---
+
+<section class="section brief-page">
+  <div class="wrap grid">
+    <aside class="side">
+      <p class="eyebrow mono">Start a project</p>
+      <h1 data-split="intro">Tell us what you're <span class="dim">building.</span></h1>
+      <p class="lede" data-intro>Three short steps. It goes straight to {site.author.name}'s inbox, and you'll get an honest reply within 48 hours.</p>
+
+      <ol class="next" data-intro>
+        <li><span class="mono">01</span>We read your brief and reply within 48h</li>
+        <li><span class="mono">02</span>A free 30-minute scoping call</li>
+        <li><span class="mono">03</span>A fixed quote, before any work starts</li>
+      </ol>
+
+      <div class="preview glass" data-intro aria-hidden="true">
+        <div class="bar mono"><span>brief.json</span><span id="briefState">draft</span></div>
+        <pre id="briefPreview"></pre>
+      </div>
+
+      <p class="alt mono" data-intro>Prefer email? <a href={`mailto:${site.email}`}>{site.email}</a></p>
+    </aside>
+
+    <div class="card glass" data-intro>
+      <form id="brief" action={endpoint} method="POST" novalidate>
+        <input type="hidden" name="_subject" value="New project brief · Gradient Works" />
+        <input type="hidden" name="_template" value="table" />
+        <input type="hidden" name="_next" value={thanks} />
+        <input type="text" name="_honey" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
+        <div class="progress" aria-hidden="true"><span id="briefBar"></span></div>
+        <p class="stepinfo mono" id="briefStep" aria-live="polite">Step 1 of 3 · The work</p>
+
+        <fieldset data-step="The work" class="on">
+          <legend>What kind of work do you need?</legend>
+          <div class="chips" data-group="work" role="group" aria-describedby="workErr">
+            {work.map((w) => <label class="chip"><input type="checkbox" name="Work" value={w} /><span>{w}</span></label>)}
+          </div>
+          <p class="err" id="workErr" hidden>Pick at least one.</p>
+
+          <label class="field">
+            <span class="lbl">Describe the problem <em>*</em></span>
+            <textarea name="Description" rows="5" required minlength="20" placeholder="What are you trying to predict, automate or evaluate? What does success look like?"></textarea>
+          </label>
+
+          <p class="lbl">Do you have data?</p>
+          <div class="chips" role="radiogroup">
+            {data.map((d, i) => <label class="chip"><input type="radio" name="Data" value={d} checked={i === 3} /><span>{d}</span></label>)}
+          </div>
+        </fieldset>
+
+        <fieldset data-step="Budget & timeline">
+          <legend>Budget and timeline</legend>
+          <p class="lbl">Type of engagement</p>
+          <div class="chips" role="radiogroup">
+            {engagement.map((e, i) => <label class="chip"><input type="radio" name="Engagement" value={e} checked={i === 3} /><span>{e}</span></label>)}
+          </div>
+
+          <p class="lbl">Budget</p>
+          <div class="chips" role="radiogroup">
+            {budget.map((b, i) => <label class="chip"><input type="radio" name="Budget" value={b} checked={i === 5} /><span>{b}</span></label>)}
+          </div>
+
+          <label class="switch">
+            <input type="checkbox" name="Budget negotiable" value="Yes" checked />
+            <span class="track" aria-hidden="true"><span></span></span>
+            <span>My budget is flexible and open to discussion</span>
+          </label>
+
+          <p class="lbl">Timeline</p>
+          <div class="chips" role="radiogroup">
+            {timeline.map((t, i) => <label class="chip"><input type="radio" name="Timeline" value={t} checked={i === 3} /><span>{t}</span></label>)}
+          </div>
+        </fieldset>
+
+        <fieldset data-step="About you">
+          <legend>Where can we reach you?</legend>
+          <div class="two">
+            <label class="field"><span class="lbl">Name <em>*</em></span><input name="Name" required autocomplete="name" /></label>
+            <label class="field"><span class="lbl">Email <em>*</em></span><input name="email" type="email" required autocomplete="email" /></label>
+          </div>
+          <div class="two">
+            <label class="field"><span class="lbl">Company or lab</span><input name="Company" autocomplete="organization" /></label>
+            <label class="field"><span class="lbl">Links</span><input name="Links" placeholder="Website, dataset, repo…" /></label>
+          </div>
+          <p class="fine">Delivered by <a href="https://formsubmit.co" target="_blank" rel="noopener">FormSubmit</a> to {site.author.name}'s inbox. Used only to reply to you.</p>
+        </fieldset>
+
+        <div class="actions">
+          <button type="button" class="btn btn-glass" id="briefBack" hidden>← Back</button>
+          <button type="button" class="btn btn-light" id="briefNext">Next <span class="arrow">→</span></button>
+          <button type="submit" class="btn btn-light" id="briefSend">Send brief <span class="arrow">→</span></button>
+        </div>
+        <p class="status" id="briefStatus" role="status"></p>
+      </form>
+
+      <div class="done" id="briefDone" hidden>
+        <pre class="tick" aria-hidden="true">{String.raw`   ╭─────╮
+   │  ✓  │
+   ╰─────╯`}</pre>
+        <h2>Brief received.</h2>
+        <p>Thanks. It's in {site.author.name}'s inbox, and you'll hear back within 48 hours. A copy of the details is below in case you want it.</p>
+        <pre class="echo" id="briefEcho"></pre>
+        <a class="btn btn-glass" href="/">Back to home</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .brief-page { padding-top: 150px; }
+  .grid { display: grid; grid-template-columns: .9fr 1.1fr; gap: 64px; align-items: start; }
+  .grid > * { min-width: 0; }
+  .side { position: sticky; top: 110px; }
+  h1 { font-size: clamp(40px, 4.6vw, 66px); line-height: 1.02; letter-spacing: -.055em; }
+  .lede { font-size: 17px; margin-top: 22px; max-width: 440px; }
+  .next { margin-top: 36px; display: grid; gap: 12px; color: var(--mute); font-size: 15px; }
+  .next li { display: flex; gap: 16px; }
+  .next .mono { color: var(--faint); padding-top: 4px; }
+  .preview { margin-top: 36px; overflow: hidden; border-radius: 16px; }
+  .preview .bar { display: flex; justify-content: space-between; padding: 12px 16px; border-bottom: 1px solid var(--line); color: var(--faint); font-size: 10px; }
+  #briefPreview { padding: 14px 16px; font: 11.5px/1.65 var(--mono); color: var(--mute); white-space: pre-wrap; min-height: 180px; }
+  #briefPreview :global(.k) { color: #9fb6ff; } #briefPreview :global(.s) { color: #f3f1ec; } #briefPreview :global(.n) { color: var(--faint); }
+  .alt { margin-top: 22px; color: var(--faint); font-size: 11px; text-transform: none; }
+  .alt a { color: var(--mute); border-bottom: 1px solid var(--line); }
+
+  .card { padding: clamp(24px, 4vw, 44px); border-radius: 28px; }
+  .hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+  .progress { height: 2px; background: var(--line); border-radius: 2px; overflow: hidden; }
+  .progress span { display: block; height: 100%; width: 33.3%; background: var(--iri); transition: width .6s var(--ease); }
+  .stepinfo { margin: 14px 0 30px; color: var(--faint); font-size: 10px; }
+  fieldset { border: 0; display: grid; gap: 14px; }
+  :global(form.stepped) fieldset:not(.on) { display: none; }
+  :global(form.stepped) fieldset.on { animation: step-in .55s var(--ease); }
+  @keyframes step-in { from { opacity: 0; transform: translateX(16px); filter: blur(4px); } }
+  /* without JS every step is visible in one long form */
+  form:not(:global(.stepped)) fieldset + fieldset { margin-top: 40px; padding-top: 40px; border-top: 1px solid var(--line); }
+  legend { font-size: clamp(24px, 2.4vw, 32px); letter-spacing: -.04em; margin-bottom: 10px; float: left; width: 100%; }
+  .lbl { display: block; font-size: 13px; color: var(--mute); margin: 10px 0 2px; }
+  .lbl em { color: #f4c58f; font-style: normal; }
+
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip input, .switch input { position: absolute; opacity: 0; pointer-events: none; }
+  .chip span { display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border-radius: 30px; font-size: 14px; color: var(--mute); cursor: pointer;
+    background: var(--glass); box-shadow: inset 0 0 0 1px var(--line); transition: background .25s, color .25s, box-shadow .25s, scale .15s; user-select: none; }
+  .chip span:hover { color: var(--text); background: var(--glass-hi); }
+  .chip input:checked + span { color: var(--bg); background: var(--text); box-shadow: none; }
+  .chip input[type=checkbox]:checked + span::before { content: "✓"; font-size: 12px; }
+  .chip input:focus-visible + span, .switch input:focus-visible + .track { outline: 1.5px solid #9fb6ff; outline-offset: 3px; }
+  .chip span:active { scale: .96; }
+  .err { color: #f4a3a3; font-size: 13px; }
+
+  .field { display: grid; gap: 8px; }
+  .field .lbl { margin: 0; }
+  input:not([type=checkbox]):not([type=radio]), textarea { width: 100%; font: 15px/1.5 var(--sans); color: var(--text); padding: 13px 16px; border-radius: 14px; border: 0; outline: 0;
+    background: rgba(0, 0, 0, .25); box-shadow: inset 0 0 0 1px var(--line); transition: box-shadow .25s, background .25s; resize: vertical; }
+  input::placeholder, textarea::placeholder { color: var(--faint); }
+  input:not([type=checkbox]):not([type=radio]):focus, textarea:focus { box-shadow: inset 0 0 0 1px rgba(159, 182, 255, .7), 0 0 0 4px rgba(159, 182, 255, .12); background: rgba(0, 0, 0, .35); }
+  input[aria-invalid=true], textarea[aria-invalid=true] { box-shadow: inset 0 0 0 1px rgba(244, 163, 163, .7) !important; }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+  .switch { display: flex; align-items: center; gap: 12px; margin-top: 8px; font-size: 14px; color: var(--mute); cursor: pointer; }
+  .track { width: 40px; height: 24px; border-radius: 20px; background: var(--glass-hi); box-shadow: inset 0 0 0 1px var(--line); position: relative; flex: none; transition: background .3s; }
+  .track span { position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; border-radius: 50%; background: var(--mute); transition: transform .35s var(--ease), background .3s; }
+  .switch input:checked + .track { background: #8ee6d1; }
+  .switch input:checked + .track span { transform: translateX(16px); background: var(--bg); }
+
+  .fine { font-size: 12px; color: var(--faint); margin-top: 6px; }
+  .fine a { color: var(--mute); border-bottom: 1px solid var(--line); }
+  .actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 34px; }
+  .actions [hidden] { display: none; }
+  .status { margin-top: 14px; font-size: 14px; color: var(--mute); text-align: right; min-height: 1.5em; }
+  .status :global(a) { color: var(--text); border-bottom: 1px solid var(--faint); }
+
+  .done { text-align: center; padding: 20px 0; animation: step-in .7s var(--ease); }
+  .done[hidden] { display: none; }
+  .tick { font: 16px/1.2 var(--mono); color: #8ee6d1; }
+  .done h2 { margin: 18px 0 12px; font-size: clamp(32px, 3.4vw, 44px); }
+  .done p { max-width: 440px; margin: 0 auto; }
+  .echo { margin: 26px auto; max-width: 480px; text-align: left; padding: 16px; border-radius: 14px; background: rgba(0, 0, 0, .25); box-shadow: inset 0 0 0 1px var(--line);
+    font: 12px/1.6 var(--mono); color: var(--mute); white-space: pre-wrap; }
+
+  @media (max-width: 1000px) {
+    .brief-page { padding-top: 120px; }
+    .grid { grid-template-columns: 1fr; gap: 40px; }
+    .side { position: static; }
+    .preview { display: none; }
+  }
+  @media (max-width: 560px) { .two { grid-template-columns: 1fr; } .actions { justify-content: stretch; } .actions .btn { flex: 1; } }
+</style>
