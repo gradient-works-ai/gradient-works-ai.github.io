@@ -1,6 +1,6 @@
 # gradient-works-ai.github.io
 
-The Gradient Works studio site, live at https://gradient-works-ai.github.io.
+The Gradient Works studio site, live at https://gradientworksai.in (served by GitHub Pages from this repo).
 
 ## Stack
 

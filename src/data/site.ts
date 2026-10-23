@@ -1,6 +1,6 @@
 export const site = {
   name: 'Gradient Works',
-  url: 'https://gradient-works-ai.github.io',
+  url: 'https://gradientworksai.in',
   description: 'Gradient Works is an applied AI studio that designs, trains and tests custom machine learning models for startups, labs and small teams.',
   email: 'dasarimanas049@gmail.com',
   github: 'https://github.com/gradient-works-ai',
