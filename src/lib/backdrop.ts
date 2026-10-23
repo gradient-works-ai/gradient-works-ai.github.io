@@ -1,3 +1,5 @@
+import { lowPower, whenIdle } from './perf';
+
 // Full-screen WebGL backdrop: domain-warped noise rendered as slow iridescent light over near-black.
 // Rendered at reduced resolution and ~30fps; hue drifts with scroll, the field leans toward the pointer.
 // If WebGL is unavailable the CSS fallback gradient on <canvas id="bg"> stays visible.
@@ -83,7 +85,7 @@ export function initBackdrop(reduce: boolean) {
   const uRes = gl.getUniformLocation(prog, 'u_res'), uTime = gl.getUniformLocation(prog, 'u_time');
   const uScroll = gl.getUniformLocation(prog, 'u_scroll'), uMouse = gl.getUniformLocation(prog, 'u_mouse');
 
-  const SCALE = 0.5;   // render at half resolution; the field is soft, so upscaling is invisible
+  const SCALE = lowPower ? 0.3 : 0.5;   // render at half resolution; the field is soft, so upscaling is invisible
   const resize = () => {
     cv.width = Math.max(1, Math.round(innerWidth * SCALE));
     cv.height = Math.max(1, Math.round(innerHeight * SCALE));
@@ -107,11 +109,12 @@ export function initBackdrop(reduce: boolean) {
     gl.drawArrays(gl.TRIANGLES, 0, 3);
   };
 
-  if (reduce) { draw(12); return; }
+  draw(((performance.timeOrigin + performance.now()) / 1000) % 3600);   // first frame immediately
+  if (reduce) return;
   let last = 0;
   const loop = (now: number) => {
-    if (now - last > 33) { last = now; draw(((performance.timeOrigin + now) / 1000) % 3600); }
+    if (now - last > (lowPower ? 66 : 33)) { last = now; draw(((performance.timeOrigin + now) / 1000) % 3600); }
     requestAnimationFrame(loop);
   };
-  requestAnimationFrame(loop);
+  whenIdle(() => requestAnimationFrame(loop));
 }

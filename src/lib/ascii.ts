@@ -1,3 +1,5 @@
+import { lowPower, whenIdle } from './perf';
+
 // ASCII figures, drawn to <canvas> on an exact character grid.
 // Each figure has two layers: text glyphs (labels, frames, blocks) and a 2×4-per-cell dot matrix
 // (braille resolution) for smooth curves and point clouds. Dots are painted as circles, not braille
@@ -19,6 +21,7 @@ const lv = (base: number, level: number) => base + 10 * level;
 const rgba = (s: number) => { const [r, g, b, a] = BASE[s % 10]; return `rgba(${r},${g},${b},${a * LEVEL[Math.floor(s / 10)]})`; };
 const glows = (s: number) => s < 10 && s !== DIM && s !== FAINT;
 const FONT = '"Geist Mono Variable", ui-monospace, monospace';
+const GLOW_DOWN = 4;   // glow layer is drawn at 1/4 resolution
 // Block and shade glyphs are painted as rectangles so they tile without the font's side bearings.
 const BLOCK: Record<string, [number, number]> = {   // [width fraction, alpha]
   '█': [1, 1], '▉': [7 / 8, 1], '▊': [6 / 8, 1], '▋': [5 / 8, 1], '▌': [4 / 8, 1], '▍': [3 / 8, 1], '▎': [2 / 8, 1], '▏': [1 / 8, 1],
@@ -75,8 +78,10 @@ function paint(f: Fig, g: Grid) {
   const { ctx, cw, fs, dpr } = f, chh = cw * 2, W = f.el.width, H = f.el.height;
   const gctx = f.glow.getContext('2d')!;
   ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.clearRect(0, 0, W, H);
-  gctx.setTransform(1, 0, 0, 1, 0, 0); gctx.clearRect(0, 0, W, H);
-  for (const c of [ctx, gctx]) { c.setTransform(dpr, 0, 0, dpr, 0, 0); c.font = `${fs}px ${FONT}`; c.textBaseline = 'middle'; }
+  gctx.setTransform(1, 0, 0, 1, 0, 0); gctx.clearRect(0, 0, f.glow.width, f.glow.height);
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  gctx.setTransform(dpr / GLOW_DOWN, 0, 0, dpr / GLOW_DOWN, 0, 0);
+  for (const c of [ctx, gctx]) { c.font = `${fs}px ${FONT}`; c.textBaseline = 'middle'; }
 
   // bucket everything by style so each colour is set once
   const text = new Map<number, [string, number, number][]>();
@@ -123,10 +128,9 @@ function paint(f: Fig, g: Grid) {
 
   draw(gctx, true);
   ctx.setTransform(1, 0, 0, 1, 0, 0);
-  ctx.globalAlpha = 0.9;
-  ctx.filter = `blur(${Math.max(2, fs * 0.5) * dpr}px)`;
-  ctx.drawImage(f.glow, 0, 0);
-  ctx.filter = 'none';
+  ctx.globalAlpha = 0.85;
+  ctx.imageSmoothingQuality = 'high';
+  ctx.drawImage(f.glow, 0, 0, W, H);   // upscaling the small layer is the blur
   ctx.globalAlpha = 1;
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   draw(ctx, false);
@@ -146,7 +150,8 @@ function fit(f: Fig) {
   f.cw = cw; f.fs = cw / 0.6; f.dpr = Math.min(devicePixelRatio || 1, 2);
   const W = f.C * cw, H = f.R * cw * 2;
   f.el.style.width = `${W}px`; f.el.style.height = `${H}px`;
-  for (const c of [f.el, f.glow]) { c.width = Math.round(W * f.dpr); c.height = Math.round(H * f.dpr); }
+  f.el.width = Math.round(W * f.dpr); f.el.height = Math.round(H * f.dpr);
+  f.glow.width = Math.ceil(f.el.width / GLOW_DOWN); f.glow.height = Math.ceil(f.el.height / GLOW_DOWN);
 }
 
 const onSlide = (el: HTMLElement) => () => !!el.closest('.slide')?.classList.contains('on');
@@ -442,9 +447,12 @@ export function initAscii(reduce: boolean) {
   document.fonts?.ready.then(() => figs.forEach((f) => { fit(f); if (reduce) paint(f, f.draw(30)); }));
 
   if (reduce) { figs.forEach((f) => paint(f, f.draw(30))); return; }
+  // One still frame straight away so nothing looks empty, then animate once the page is idle.
+  figs.forEach((f) => { try { paint(f, f.draw(0)); } catch { /* drawn again by the loop */ } });
+  const frame = lowPower ? 83 : 40;   // ~12 fps on low-power devices, ~24 fps otherwise
   let last = 0;
   const loop = (now: number) => {
-    if (now - last > 40) {   // ~24 fps is plenty for these figures
+    if (now - last > frame) {
       last = now;
       figs.forEach((f) => {
         if (!visible.has(f.el) || !f.active()) return;
@@ -453,5 +461,5 @@ export function initAscii(reduce: boolean) {
     }
     requestAnimationFrame(loop);
   };
-  requestAnimationFrame(loop);
+  whenIdle(() => requestAnimationFrame(loop));
 }

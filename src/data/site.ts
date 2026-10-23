@@ -13,6 +13,7 @@ export const founder = {
   role: 'Founder, Gradient Works',
   study: 'Computer Science undergraduate, Amrita School of Engineering',
   city: 'Bangalore, India',
+  photo: '',   // e.g. '/founder.jpg' in public/; empty = halftone initials
   links: [
     { label: 'Portfolio', href: 'https://www.algorithmicbit.tech/' },
     { label: 'GitHub', href: 'https://github.com/ManasDasri' },

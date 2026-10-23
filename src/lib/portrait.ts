@@ -1,3 +1,5 @@
+import { lowPower, whenIdle } from './perf';
+
 // Founder portrait as a halftone dot field. Uses /founder.jpg if it exists, otherwise the initials.
 // Dot size follows the image's brightness, colour follows the site palette, and a ripple follows the pointer.
 const PALETTE: [number, number, number][] = [[142, 230, 209], [159, 182, 255], [232, 163, 201], [244, 197, 143]];
@@ -48,9 +50,11 @@ export function initPortrait(reduce: boolean) {
     gap = W / COLS;
   };
 
+  const TINTS = 10, ALPHAS = 5;
   const draw = (t: number) => {
     if (!lum) return;
     ctx.clearRect(0, 0, W, H);
+    const buckets: number[][] = Array.from({ length: TINTS * ALPHAS }, () => []);
     for (let y = 0; y < COLS; y++) for (let x = 0; x < COLS; x++) {
       const cx = (x + 0.5) * gap, cy = (y + 0.5) * gap;
       const d = Math.hypot(cx - mx, cy - my) / (W * 0.22);
@@ -58,9 +62,18 @@ export function initPortrait(reduce: boolean) {
       const v = Math.min(1, lum[y * COLS + x] ** 1.5 * (0.92 + 0.08 * Math.sin(t * 1.2 + x * 0.3 + y * 0.2)) + ripple);
       if (v < 0.05) continue;
       const r = gap * 0.48 * (0.18 + 0.82 * v);
-      ctx.fillStyle = `rgba(${tint((x + y) / (COLS * 2) + Math.sin(t * 0.15) * 0.08)},${(0.25 + v * 0.75).toFixed(3)})`;
-      ctx.beginPath(); ctx.arc(cx, cy, r, 0, 6.2832); ctx.fill();
+      const ti = Math.min(TINTS - 1, Math.floor(((x + y) / (COLS * 2)) * TINTS)), ai = Math.min(ALPHAS - 1, Math.floor(v * ALPHAS));
+      buckets[ti * ALPHAS + ai].push(cx, cy, r);
     }
+    const drift = Math.sin(t * 0.15) * 0.08;
+    buckets.forEach((pts, b) => {
+      if (!pts.length) return;
+      const ti = Math.floor(b / ALPHAS), ai = b % ALPHAS;
+      ctx.fillStyle = `rgba(${tint((ti + 0.5) / TINTS + drift)},${(0.25 + ((ai + 0.5) / ALPHAS) * 0.75).toFixed(3)})`;
+      ctx.beginPath();
+      for (let i = 0; i < pts.length; i += 3) { ctx.moveTo(pts[i] + pts[i + 2], pts[i + 1]); ctx.arc(pts[i], pts[i + 1], pts[i + 2], 0, 6.2832); }
+      ctx.fill();
+    });
   };
 
   resize();
@@ -69,17 +82,19 @@ export function initPortrait(reduce: boolean) {
   cv.addEventListener('pointerleave', () => { mx = my = -1e4; });
   new IntersectionObserver(([e]) => { on = e.isIntersecting; }).observe(cv);
 
-  const fallback = () => document.fonts.ready.then(() => { const c = initialsSource(cv.dataset.initials ?? '', 400); sample(c, 400, 400); if (reduce) draw(0); });
-  const img = new Image();
-  img.onload = () => { sample(img, img.naturalWidth, img.naturalHeight); if (reduce) draw(0); };
-  img.onerror = fallback;
-  img.src = cv.dataset.src ?? '';
+  const fallback = () => document.fonts.ready.then(() => { const c = initialsSource(cv.dataset.initials ?? '', 400); sample(c, 400, 400); draw(0); });
+  if (cv.dataset.src) {
+    const img = new Image();
+    img.onload = () => { sample(img, img.naturalWidth, img.naturalHeight); draw(0); };
+    img.onerror = fallback;
+    img.src = cv.dataset.src;
+  } else fallback();
 
-  if (reduce) return;
+  if (reduce || lowPower) return;   // still frame only
   let last = 0;
   const loop = (now: number) => {
-    if (on && now - last > 33) { last = now; draw(now / 1000); }
+    if (on && now - last > (lowPower ? 83 : 33)) { last = now; draw(now / 1000); }
     requestAnimationFrame(loop);
   };
-  requestAnimationFrame(loop);
+  whenIdle(() => requestAnimationFrame(loop));
 }

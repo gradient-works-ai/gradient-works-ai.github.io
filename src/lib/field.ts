@@ -1,3 +1,5 @@
+import { lowPower, whenIdle } from './perf';
+
 // Hero background: a halftone dot field. Dot size follows a slow interference pattern,
 // a ripple follows the pointer, and colour drifts across the palette from left to right.
 const PALETTE: [number, number, number][] = [[142, 230, 209], [159, 182, 255], [232, 163, 201], [244, 197, 143]];
@@ -57,11 +59,13 @@ export function initField(reduce: boolean) {
   addEventListener('pointermove', (e) => { const r = cv.getBoundingClientRect(); mx = e.clientX - r.left; my = e.clientY - r.top; }, { passive: true });
   new IntersectionObserver(([e]) => { on = e.isIntersecting; }).observe(cv);
 
-  if (reduce) { draw(0); return; }
+  // Low-power devices get one still frame of the field; everyone else animates once the page is idle.
+  draw(0);
+  if (reduce || lowPower) return;
   let last = 0;
   const loop = (now: number) => {
     if (on && now - last > 42) { last = now; draw(now / 1000); }
     requestAnimationFrame(loop);
   };
-  requestAnimationFrame(loop);
+  whenIdle(() => requestAnimationFrame(loop));
 }

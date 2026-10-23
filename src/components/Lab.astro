@@ -7,7 +7,7 @@ import { lab, site } from '../data/site';
     <div class="head">
       <div>
         <p class="eyebrow mono">Lab</p>
-        <h2 data-split>A research lab that<br />ships its own models.</h2>
+        <h1 class="page-title" data-split>A research lab that<br />ships its own models.</h1>
       </div>
       <div class="head-side" data-reveal>
         <p>Between client work we build open models and tools. Each one lives in its own repository, with code, weights and evaluation results you can check yourself.</p>
@@ -18,7 +18,7 @@ import { lab, site } from '../data/site';
       {lab.map((m) => (
         <a class="item" href={`/lab/${m.slug}/`} data-reveal>
           <div class="media glass" data-tilt><canvas class="ascii" id={m.art} data-fit=".86" data-fill="height" aria-hidden="true"></canvas></div>
-          <div class="meta"><h3>{m.name}</h3><span class="mono">{m.meta}</span></div>
+          <div class="meta"><h2 class="t3">{m.name}</h2><span class="mono">{m.meta}</span></div>
         </a>
       ))}
     </div>
@@ -33,7 +33,7 @@ import { lab, site } from '../data/site';
   .media canvas { transition: transform 1.2s var(--ease); }
   .item:hover .media canvas { transform: scale(1.04); }
   .meta { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; margin-top: 18px; }
-  .meta h3 { font-size: 19px; }
+  .meta .t3 { font-size: 19px; }
   .meta .mono { color: var(--faint); font-size: 10px; text-align: right; }
   @media (max-width: 800px) { .work { grid-template-columns: 1fr; gap: 40px; } }
 </style>

@@ -7,7 +7,7 @@ import { services } from '../data/site';
     <div class="head">
       <div>
         <p class="eyebrow mono">Services</p>
-        <h2 data-split>Four disciplines,<br />one standard of rigour.</h2>
+        <h1 class="page-title" data-split>Four disciplines,<br />one standard of rigour.</h1>
       </div>
       <p class="head-side" data-reveal>We design, train and test machine learning models for startups, research labs and small teams. Every engagement has a defined metric and a written result.</p>
     </div>
@@ -19,7 +19,7 @@ import { services } from '../data/site';
             <pre class="glyph" aria-hidden="true">{s.glyph}</pre>
           </div>
           <div>
-            <h3>{s.title}</h3>
+            <h2 class="t3">{s.title}</h2>
             <ul>{s.items.map((it) => <li>{it}</li>)}</ul>
           </div>
         </article>
@@ -35,7 +35,7 @@ import { services } from '../data/site';
   .num { color: var(--faint); font-size: 11px; }
   .glyph { font: 12px/1.2 var(--mono); color: var(--faint); text-align: right; transition: color .5s var(--ease); }
   .card:hover .glyph { color: var(--text); }
-  h3 { margin-bottom: 18px; }
+  .t3 { margin-bottom: 18px; }
   li { padding: 9px 0; font-size: 15px; color: var(--mute); border-top: 1px solid var(--line); }
   @media (max-width: 1100px) { .cards { grid-template-columns: 1fr 1fr; } }
   @media (max-width: 640px) { .cards { grid-template-columns: 1fr; } .card { min-height: 0; gap: 48px; } }

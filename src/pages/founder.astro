@@ -33,7 +33,7 @@ const principles = [
         </ul>
       </div>
       <figure class="portrait glass" data-intro>
-        <canvas id="portrait" data-src="/founder.jpg" data-initials={initials} aria-label={`Halftone portrait of ${founder.name}`} role="img"></canvas>
+        <canvas id="portrait" data-src={founder.photo || undefined} data-initials={initials} aria-label={`Halftone portrait of ${founder.name}`} role="img"></canvas>
         <figcaption class="mono"><span>{founder.name}</span><span>Fig. 00 · halftone</span></figcaption>
       </figure>
     </div>

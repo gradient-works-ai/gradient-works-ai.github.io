@@ -7,7 +7,7 @@ import { steps } from '../data/site';
     <div class="head">
       <div>
         <p class="eyebrow mono">Process</p>
-        <h2 data-split>From hypothesis<br />to handover.</h2>
+        <h1 class="page-title" data-split>From hypothesis<br />to handover.</h1>
       </div>
       <p class="head-side" data-reveal>Every project runs the same loop: define the metric, beat a baseline, test on data the model has never seen, then hand over everything. Here's a typical four-week sprint.</p>
     </div>
@@ -31,7 +31,7 @@ import { steps } from '../data/site';
         {steps.map((s, i) => (
           <li class={`step${i === 0 ? ' active' : ''}`}>
             <p class="meta mono"><span class="dot"></span>0{i + 1} — {s.when}</p>
-            <h3>{s.title}</h3>
+            <h2 class="step-title">{s.title}</h2>
             <p class="body">{s.body}</p>
             <ul class="gives">{s.gives.map((g) => <li class="mono">{g}</li>)}</ul>
           </li>
@@ -66,8 +66,8 @@ import { steps } from '../data/site';
   .meta { display: flex; align-items: center; gap: 12px; color: var(--faint); font-size: 11px; }
   .dot { width: 9px; height: 9px; border-radius: 50%; margin-left: -41px; margin-right: 20px; background: var(--bg); box-shadow: inset 0 0 0 1px var(--faint); transition: all .5s var(--ease); }
   .step:global(.active) .dot { background: #f3f1ec; box-shadow: 0 0 0 5px rgba(243, 241, 236, .1); }
-  .step h3 { font-size: clamp(32px, 3.4vw, 48px); letter-spacing: -.05em; margin: 14px 0 14px; line-height: 1.05; color: var(--mute); transition: color .5s var(--ease); }
-  .step:global(.active) h3, :global(html:not(.motion)) .step h3 { color: var(--text); }
+  .step .step-title { font-size: clamp(32px, 3.4vw, 48px); letter-spacing: -.05em; margin: 14px 0 14px; line-height: 1.05; color: var(--mute); transition: color .5s var(--ease); }
+  .step:global(.active) .step-title, :global(html:not(.motion)) .step .step-title { color: var(--text); }
   .body { font-size: 18px; max-width: 470px; color: var(--mute); }
   .gives { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
   .gives li { padding: 8px 12px; border-radius: 30px; font-size: 10px; color: var(--mute); background: var(--glass); box-shadow: inset 0 0 0 1px var(--line); }
