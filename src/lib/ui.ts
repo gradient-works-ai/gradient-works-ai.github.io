@@ -105,6 +105,18 @@ function footer() {
   tick(); setInterval(tick, 30_000);
 
   const mark = document.getElementById('markText');
+  // Scale the wordmark so it exactly fills its container, whatever the font metrics or window shape.
+  const box = mark?.parentElement;
+  if (mark && box) {
+    const fit = () => {
+      const cs = getComputedStyle(box);
+      const room = box.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+      const size = parseFloat(getComputedStyle(mark).fontSize);
+      if (mark.scrollWidth > 0) mark.style.fontSize = `${(size * room) / mark.scrollWidth}px`;
+    };
+    document.fonts?.ready.then(fit);
+    new ResizeObserver(fit).observe(box);
+  }
   mark?.parentElement?.addEventListener('pointermove', (e) => {
     const r = mark.getBoundingClientRect();
     mark.style.setProperty('--mx', `${e.clientX - r.left}px`);

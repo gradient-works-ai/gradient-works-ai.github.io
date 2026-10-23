@@ -81,8 +81,8 @@ const portfolio = site.author.url.replace(/^https?:\/\/(www\.)?/, '').replace(/\
   .bottom a:hover, #toTop:hover { color: var(--text); }
 
   /* Oversized wordmark, cropped by the bottom edge. A soft spotlight follows the pointer (vars set in JS). */
-  .mark { position: relative; margin-top: 8px; height: 12.4vw; display: flex; justify-content: center; user-select: none; }
-  .mark span { display: block; font-size: 15.6vw; font-weight: 500; letter-spacing: -.075em; line-height: .78; white-space: nowrap;
+  .mark { position: relative; margin-top: 8px; padding: 0 2vw; display: flex; justify-content: center; overflow: hidden; user-select: none; }
+  .mark span { display: block; font-size: 14.5vw; font-weight: 500; letter-spacing: -.075em; line-height: .78; white-space: nowrap; padding-right: .075em; margin-bottom: -.2em;
     background:
       radial-gradient(28vw circle at var(--mx, 50%) var(--my, 40%), rgba(244, 197, 143, .75), rgba(232, 163, 201, .45) 35%, rgba(159, 182, 255, .2) 60%, transparent 75%),
       linear-gradient(180deg, rgba(243, 241, 236, .2), rgba(243, 241, 236, .02) 85%);
