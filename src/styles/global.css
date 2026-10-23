@@ -87,9 +87,7 @@ p { color: var(--mute); }
 .grid > *, .proc > *, .work > *, .hero-grid > * { min-width: 0; }
 
 /* ---------- ascii ---------- */
-pre.ascii { font-family: var(--mono); line-height: 1.2; letter-spacing: 0; white-space: pre; user-select: none; color: rgba(243, 241, 236, .34); }
-pre.ascii b { font-weight: 400; color: var(--text); }
-pre.ascii i { font-style: normal; color: rgba(243, 241, 236, .2); }
+canvas.ascii { display: block; max-width: 100%; }
 .fig { margin-top: 16px; color: var(--faint); font-size: 11px; line-height: 1.6; }
 .fig b { font-weight: 400; color: var(--text); }
 

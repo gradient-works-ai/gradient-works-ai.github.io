@@ -7,6 +7,39 @@ export const site = {
   author: { name: 'Manas Dasari', url: 'https://www.algorithmicbit.tech/' },
 };
 
+// Founder page. Everything here is drawn from the public portfolio and GitHub; keep it verifiable.
+export const founder = {
+  name: 'Manas Dasari',
+  role: 'Founder, Gradient Works',
+  study: 'Computer Science undergraduate, Amrita School of Engineering',
+  city: 'Bangalore, India',
+  links: [
+    { label: 'Portfolio', href: 'https://www.algorithmicbit.tech/' },
+    { label: 'GitHub', href: 'https://github.com/ManasDasri' },
+    { label: 'LinkedIn', href: 'https://www.linkedin.com/in/manas-dasari-2a52163a5' },
+    { label: 'X', href: 'https://x.com/ManasDmg9' },
+  ],
+  work: [
+    { name: 'NeuroDial', kind: 'ML · biosignals', href: 'https://github.com/ManasDasri/Med-EEG',
+      text: 'Can EEG read meditation? A multi-channel EEG pipeline with a live results dashboard.' },
+    { name: 'Analogue Risk', kind: 'ML · quant research', href: 'https://github.com/ManasDasri/analogue-risk',
+      text: 'Regime-conditioned analogue forecasting of market risk, with self-exciting tail-risk gating.' },
+    { name: 'Velora', kind: 'ML · forecasting', href: 'https://www.algorithmicbit.tech/',
+      text: 'Stock price forecasting that combines Monte Carlo simulation with sentiment analysis of headlines.' },
+    { name: 'Atmos', kind: 'Optimisation · civic', href: 'https://www.algorithmicbit.tech/',
+      text: 'Proposes where to place air-quality sensors across Bengaluru. Python and FastAPI.' },
+    { name: 'Sprout', kind: 'Developer tools · Go', href: 'https://github.com/Sprout-DevLabs/sprout',
+      text: 'Maps codebases for developers and AI agents, with an MCP server. Shipped with Homebrew, Scoop and Linux packages.' },
+    { name: 'FieldLensAI', kind: 'Hackathon · 2026', href: 'https://github.com/FieldLensAI',
+      text: 'Smart India Hackathon 2026 entry.' },
+  ],
+  toolkit: {
+    'Machine learning': ['Python', 'TensorFlow', 'NumPy', 'Pandas', 'Optimisation'],
+    'Engineering': ['Go', 'FastAPI', 'Express.js', 'PostgreSQL', 'Redis', 'Supabase'],
+    'Infrastructure': ['Docker', 'Linux', 'Git'],
+  } as Record<string, string[]>,
+};
+
 // Web3Forms access key for the project brief form (https://web3forms.com, free).
 // It's safe to publish: it can only send to the inbox it was created for. Empty = email fallback.
 export const formKey = 'a96f29f5-3287-4f7c-84bd-aae3c640b376';
@@ -17,6 +50,7 @@ export const nav = [
   { href: '/services/', label: 'Services', teaser: 'Four disciplines, one standard of rigour.', glyph: '┌─┐\n│▓│──▶\n└─┘' },
   { href: '/process/', label: 'Process', teaser: 'From scoping call to handover in four weeks.', glyph: ' ∂L\n──  → 0\n ∂θ' },
   { href: '/lab/', label: 'Lab', teaser: 'Open models we build between client projects.', glyph: '(o) (@)\n( ) (o)' },
+  { href: '/founder/', label: 'Founder', teaser: 'Meet the person who builds your models.', glyph: ' ╭─╮\n ╰┬╯\n╭─┴─╮' },
   { href: '/pricing/', label: 'Pricing', teaser: 'Fixed-price audits, sprints and retainers.', glyph: '$ ███▌\n$ ██▌\n$ █▌' },
   { href: '/contact/', label: 'Contact', teaser: 'Tell us about the problem. Reply within 48h.', glyph: '[✉] →' },
 ];
@@ -88,8 +122,8 @@ export const promises = [
 // One entry per model. Each gets a page at /lab/<slug>; `art` picks the ASCII figure on its card.
 // Set `repo` once the model is public and the page will link to it.
 export const lab = [
-  { slug: 'neurodial', name: 'NeuroDial', meta: 'EEG classification · In progress', status: 'Training', art: 'aHead', repo: '',
-    blurb: 'An EEG signal classification pipeline for medical research workflows: preprocessing, channel-aware models and a clinician-readable evaluation report.' },
+  { slug: 'neurodial', name: 'NeuroDial', meta: 'EEG · meditation states · In progress', status: 'Training', art: 'aHead', repo: '',
+    blurb: 'Can EEG read meditation? A multi-channel EEG pipeline (preprocessing, channel-aware models and held-out evaluation) with a live results dashboard.' },
   { slug: 'eval-harness', name: 'Eval Harness', meta: 'Model testing toolkit · Planned', status: 'Designing', art: 'aBars', repo: '',
     blurb: 'A reusable test suite for classification and LLM models. Metrics, data slices, robustness checks and a written report from one command.' },
 ];

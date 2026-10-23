@@ -10,7 +10,7 @@ const home = path === '/';
   <nav class="bar glass" aria-label="Main">
     <a class="brand" href={home ? '#top' : '/'} data-scroll={home || undefined}><Logo id="logo-hdr" size={19} /> Gradient Works</a>
     <ul class="links">
-      {nav.slice(0, 4).map((n) => <li><a href={n.href} class={path.startsWith(n.href) ? 'on' : undefined} aria-current={path.startsWith(n.href) ? 'page' : undefined} data-scramble>{n.label}</a></li>)}
+      {nav.filter((n) => n.href !== '/contact/').map((n) => <li><a href={n.href} class={path.startsWith(n.href) ? 'on' : undefined} aria-current={path.startsWith(n.href) ? 'page' : undefined} data-scramble>{n.label}</a></li>)}
     </ul>
     <div class="right">
       <button class="kbd" id="paletteBtn" aria-label="Open command menu" aria-haspopup="dialog">

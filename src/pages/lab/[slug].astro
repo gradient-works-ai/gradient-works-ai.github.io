@@ -26,7 +26,7 @@ const notify = `mailto:${site.email}?subject=${encodeURIComponent(`Notify me: ${
         </div>
       </div>
       <div class="figure" data-intro>
-        <div class="panel glass" data-tilt><pre class="ascii" id="aBuild" data-cols="72" data-model={m.slug} aria-hidden="true"></pre></div>
+        <div class="panel glass" data-tilt><canvas class="ascii" id="aBuild" data-model={m.slug} aria-hidden="true"></canvas></div>
         <p class="fig mono"><b>Fig. 00</b> — Training log for {m.name}. Illustrative, not live data.</p>
       </div>
     </div>

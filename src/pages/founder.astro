@@ -1,0 +1,137 @@
+---
+import Page from '../layouts/Page.astro';
+import { founder, site } from '../data/site';
+
+const initials = founder.name.split(' ').map((w) => w[0]).join('');
+const principles = [
+  { title: 'You talk to the builder.', body: 'No account managers or hand-offs. The person on your scoping call is the one writing the code, running the experiments and writing the report.' },
+  { title: 'Scope I can deliver.', body: 'I take on prototypes, evaluations and well-scoped models. If your project needs a 24/7 production team, I will say so on the first call.' },
+  { title: 'Results over demos.', body: 'Every model ships with a baseline, a held-out test and an honest write-up, including what did not work.' },
+];
+---
+
+<Page title={`${founder.name}, founder`} description={`${founder.name} founded ${site.name}. ${founder.study}, based in ${founder.city}.`}>
+  <section class="section intro">
+    <div class="wrap grid">
+      <div class="copy">
+        <p class="eyebrow mono">Founder</p>
+        <h1 data-split="intro">{founder.name}</h1>
+        <p class="role mono" data-intro>{founder.role} · {founder.city}</p>
+        <p class="lede" data-intro>
+          I'm a {founder.study.replace('undergraduate', 'undergrad')}. I build machine learning systems, developer tools and real-time apps, and I started Gradient Works to do that work properly for other teams.
+        </p>
+        <p class="lede" data-intro>
+          The studio is deliberately small. When you work with Gradient Works, you work directly with me.
+        </p>
+        <div class="ctas" data-intro>
+          <a class="btn btn-light" href="/contact/">Start a project <span class="arrow">→</span></a>
+          <a class="btn btn-glass" href={founder.links[0].href} target="_blank" rel="noopener">Portfolio ↗</a>
+        </div>
+        <ul class="links mono" data-intro>
+          {founder.links.slice(1).map((l) => <li><a href={l.href} target="_blank" rel="noopener">{l.label} ↗</a></li>)}
+          <li><a href={`mailto:${site.email}`}>Email ↗</a></li>
+        </ul>
+      </div>
+      <figure class="portrait glass" data-intro>
+        <canvas id="portrait" data-src="/founder.jpg" data-initials={initials} aria-label={`Halftone portrait of ${founder.name}`} role="img"></canvas>
+        <figcaption class="mono"><span>{founder.name}</span><span>Fig. 00 · halftone</span></figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="section work-sec">
+    <div class="wrap">
+      <div class="head">
+        <div>
+          <p class="eyebrow mono">Selected work</p>
+          <h2 data-split>Things I've built.</h2>
+        </div>
+        <p class="head-side" data-reveal>A mix of machine learning research and shipped software. Each one links to its code or write-up.</p>
+      </div>
+      <ul class="work">
+        {founder.work.map((w, i) => (
+          <li data-reveal>
+            <a class="item glass" href={w.href} target="_blank" rel="noopener" data-tilt>
+              <span class="num mono">0{i + 1}</span>
+              <span class="kind mono">{w.kind}</span>
+              <h3>{w.name}</h3>
+              <p>{w.text}</p>
+              <span class="go" aria-hidden="true">↗</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap split">
+      <div>
+        <p class="eyebrow mono">How I work</p>
+        <h2 data-split>Small by design.</h2>
+        <ol class="princ">
+          {principles.map((p, i) => (
+            <li data-reveal><span class="mono">/0{i + 1}</span><div><h3>{p.title}</h3><p>{p.body}</p></div></li>
+          ))}
+        </ol>
+      </div>
+      <div class="toolkit glass" data-reveal>
+        <p class="mono label">Toolkit</p>
+        {Object.entries(founder.toolkit).map(([group, items]) => (
+          <div class="group">
+            <p class="gname">{group}</p>
+            <ul>{items.map((t) => <li class="mono">{t}</li>)}</ul>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+</Page>
+
+<style>
+  .intro { padding-top: 160px; }
+  .grid { display: grid; grid-template-columns: 1.1fr .9fr; gap: 72px; align-items: center; }
+  .grid > * { min-width: 0; }
+  h1 { font-size: clamp(52px, 7vw, 104px); line-height: .98; letter-spacing: -.06em; }
+  .role { margin-top: 22px; color: var(--mute); font-size: 11px; }
+  .lede { font-size: 18px; max-width: 520px; margin-top: 22px; }
+  .ctas { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 36px; }
+  .links { display: flex; flex-wrap: wrap; gap: 8px 22px; margin-top: 28px; font-size: 11px; }
+  .links a { color: var(--mute); transition: color .3s; }
+  .links a:hover { color: var(--text); }
+
+  .portrait { margin: 0; padding: 22px; border-radius: 28px; }
+  #portrait { display: block; width: 100%; aspect-ratio: 1; cursor: crosshair; }
+  figcaption { display: flex; justify-content: space-between; margin-top: 14px; color: var(--faint); font-size: 10px; }
+
+  .work { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; perspective: 1400px; }
+  .item { position: relative; display: flex; flex-direction: column; gap: 12px; padding: 28px; min-height: 260px; }
+  .num { color: var(--faint); font-size: 10px; }
+  .kind { color: var(--mute); font-size: 10px; margin-top: auto; }
+  .item h3 { font-size: 24px; }
+  .item p { font-size: 15px; }
+  .go { position: absolute; top: 22px; right: 22px; width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; color: var(--mute);
+    box-shadow: inset 0 0 0 1px var(--line); transition: background .4s var(--ease), color .4s, transform .5s var(--ease); }
+  .item:hover .go { background: var(--text); color: var(--bg); transform: rotate(45deg); }
+
+  .split { display: grid; grid-template-columns: 1.1fr .9fr; gap: 72px; align-items: start; }
+  .princ { margin-top: 40px; }
+  .princ li { display: grid; grid-template-columns: 56px 1fr; padding: 30px 0; border-top: 1px solid var(--line); }
+  .princ .mono { color: var(--faint); padding-top: 6px; }
+  .princ p { margin-top: 10px; max-width: 480px; }
+  .toolkit { padding: 32px; position: sticky; top: 120px; }
+  .label { color: var(--faint); font-size: 10px; margin-bottom: 8px; }
+  .group { padding: 18px 0; border-bottom: 1px solid var(--line); }
+  .group:last-child { border-bottom: 0; padding-bottom: 0; }
+  .gname { color: var(--text); font-size: 15px; margin-bottom: 12px; }
+  .group ul { display: flex; flex-wrap: wrap; gap: 8px; }
+  .group li { padding: 7px 12px; border-radius: 30px; font-size: 10px; color: var(--mute); background: var(--glass); box-shadow: inset 0 0 0 1px var(--line); }
+
+  @media (max-width: 1000px) {
+    .intro { padding-top: 120px; }
+    .grid, .split { grid-template-columns: 1fr; gap: 48px; }
+    .work { grid-template-columns: 1fr 1fr; }
+    .toolkit { position: static; }
+  }
+  @media (max-width: 640px) { .work { grid-template-columns: 1fr; } .item { min-height: 0; } }
+</style>

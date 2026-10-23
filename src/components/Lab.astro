@@ -17,7 +17,7 @@ import { lab, site } from '../data/site';
     <div class="work">
       {lab.map((m) => (
         <a class="item" href={`/lab/${m.slug}/`} data-reveal>
-          <div class="media glass" data-tilt><pre class="ascii" id={m.art} data-cols="64" data-fit=".74" aria-hidden="true"></pre></div>
+          <div class="media glass" data-tilt><canvas class="ascii" id={m.art} data-fit=".86" data-fill="height" aria-hidden="true"></canvas></div>
           <div class="meta"><h3>{m.name}</h3><span class="mono">{m.meta}</span></div>
         </a>
       ))}
@@ -29,8 +29,9 @@ import { lab, site } from '../data/site';
   .gh { margin-top: 24px; }
   .work { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; perspective: 1400px; }
   .media { aspect-ratio: 16 / 10; display: grid; place-items: center; overflow: hidden; }
-  .media pre { transition: transform 1.2s var(--ease); }
-  .item:hover .media pre { transform: scale(1.05); }
+  .media { padding: 18px; }
+  .media canvas { transition: transform 1.2s var(--ease); }
+  .item:hover .media canvas { transform: scale(1.04); }
   .meta { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; margin-top: 18px; }
   .meta h3 { font-size: 19px; }
   .meta .mono { color: var(--faint); font-size: 10px; text-align: right; }

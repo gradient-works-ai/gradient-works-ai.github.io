@@ -7,11 +7,11 @@ import { reasons } from '../data/site';
     <div class="stick">
       <p class="eyebrow mono">Approach</p>
       <h2 data-split>Why teams<br />work with us.</h2>
-      <pre class="loop" data-reveal aria-hidden="true">{String.raw`┌──────────┐    ┌──────────┐    ┌──────────┐
-│ research │───▶│  build   │───▶│   test   │
-└──────────┘    └──────────┘    └────┬─────┘
-     ▲                               │
-     └───────────  iterate  ◀────────┘`}</pre>
+      <pre class="loop" data-reveal aria-hidden="true">{String.raw`╭────────────╮      ╭────────────╮      ╭────────────╮
+│  research  │ ───▶ │   build    │ ───▶ │    test    │
+╰────────────╯      ╰────────────╯      ╰──────┬─────╯
+       ▲                                       │
+       ╰────────────────  iterate  ◀───────────╯`}</pre>
     </div>
     <ol class="list">
       {reasons.map((r, i) => (

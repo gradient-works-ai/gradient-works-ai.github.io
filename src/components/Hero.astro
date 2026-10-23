@@ -2,7 +2,7 @@
 import { stack } from '../data/site';
 
 const slides = [
-  { id: 'aEeg', tab: 'NeuroDial', cap: 'Classifying multi-channel EEG signals for medical research workflows' },
+  { id: 'aEeg', tab: 'NeuroDial', cap: 'Reading meditation states from multi-channel EEG' },
   { id: 'aEval', tab: 'Evaluation', cap: 'Independent evaluation that tells you where a model fails, and why' },
   { id: 'aVision', tab: 'Vision', cap: 'Computer vision prototypes for inspection and detection' },
 ];
@@ -28,7 +28,7 @@ const slides = [
       <div class="stage glass" data-tilt>
         {slides.map((s, i) => (
           <div class={`slide${i === 0 ? ' on' : ''}`}>
-            <pre class="ascii" id={s.id} data-cols="92" aria-hidden="true"></pre>
+            <canvas class="ascii" id={s.id} data-fit=".94" aria-hidden="true"></canvas>
             <p class="cap">{s.cap}</p>
           </div>
         ))}
@@ -66,7 +66,7 @@ const slides = [
   .stage { aspect-ratio: 16 / 10; overflow: hidden; border-radius: 24px; background: rgba(20, 19, 16, .5); }
   .slide { position: absolute; inset: 0; opacity: 0; transform: scale(1.03); transition: opacity 1s var(--ease), transform 1.4s var(--ease); }
   .slide:global(.on) { opacity: 1; transform: none; }
-  .slide pre { position: absolute; left: 0; right: 0; top: 46%; transform: translateY(-50%); }
+  .slide canvas { position: absolute; left: 50%; top: 20px; transform: translateX(-50%); }
   .slide::after { content: ""; position: absolute; inset: 56% 0 0; background: linear-gradient(transparent, rgba(16, 15, 13, .92) 75%); pointer-events: none; }
   .cap { position: absolute; z-index: 1; left: 28px; right: 28px; bottom: 24px; max-width: 440px; color: var(--text); font-size: clamp(17px, 1.5vw, 21px); line-height: 1.25; letter-spacing: -.03em; }
   .tabs { display: grid; grid-template-columns: repeat(3, 1fr); margin-top: 18px; }
