@@ -1,13 +1,13 @@
 ---
 import Page from '../../layouts/Page.astro';
-import { lab, site } from '../../data/site';
+import { lab, site, formKey } from '../../data/site';
 
 export function getStaticPaths() {
   return lab.map((m) => ({ params: { slug: m.slug }, props: { m } }));
 }
 
 const { m } = Astro.props;
-const notify = `mailto:${site.email}?subject=${encodeURIComponent(`Notify me: ${m.name}`)}`;
+const done = new URL('/lab/notified/', Astro.site).href;
 ---
 
 <Page title={`${m.name} — Under the works`} description={m.blurb} class="uw">
@@ -18,8 +18,19 @@ const notify = `mailto:${site.email}?subject=${encodeURIComponent(`Notify me: ${
         <h1 data-split="intro">{m.name} <span class="dim">is under the works.</span></h1>
         <p class="lede" data-intro>{m.blurb}</p>
         <p class="lede note" data-intro>The repository goes public once the evaluation report is finished. We publish results, not demos.</p>
+        <!-- Plain form post: works without JS or a mail app, lands on /lab/notified/ -->
+        <form class="notify" action="https://api.web3forms.com/submit" method="POST" data-intro>
+          <input type="hidden" name="access_key" value={formKey} />
+          <input type="hidden" name="subject" value={`Notify me: ${m.name}`} />
+          <input type="hidden" name="from_name" value="Gradient Works website" />
+          <input type="hidden" name="Model" value={m.name} />
+          <input type="hidden" name="redirect" value={done} />
+          <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
+          <label class="sr" for="notifyEmail">Your email</label>
+          <input id="notifyEmail" type="email" name="email" required placeholder="you@company.com" autocomplete="email" />
+          <button class="btn btn-light" type="submit">Notify me when it ships <span class="arrow">→</span></button>
+        </form>
         <div class="ctas" data-intro>
-          <a class="btn btn-light" href={notify}>Notify me when it ships <span class="arrow">→</span></a>
           {m.repo
             ? <a class="btn btn-glass" href={m.repo} target="_blank" rel="noopener">View repo ↗</a>
             : <a class="btn btn-glass" href="/lab/">Back to the lab</a>}
@@ -44,7 +55,14 @@ const notify = `mailto:${site.email}?subject=${encodeURIComponent(`Notify me: ${
   h1 { font-size: clamp(42px, 5vw, 72px); line-height: 1.02; letter-spacing: -.055em; margin: 28px 0 26px; }
   .lede { font-size: 18px; max-width: 500px; }
   .note { margin-top: 14px; font-size: 15px; color: var(--faint); }
-  .ctas { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 40px; }
+  .ctas { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+  .notify { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 40px; max-width: 520px; }
+  .notify input[type=email] { flex: 1 1 220px; height: 48px; padding: 0 18px; border-radius: 40px; border: 0; outline: 0; font: 15px var(--sans); color: var(--text);
+    background: rgba(0, 0, 0, .3); box-shadow: inset 0 0 0 1px var(--line); transition: box-shadow .25s; }
+  .notify input[type=email]::placeholder { color: var(--faint); }
+  .notify input[type=email]:focus { box-shadow: inset 0 0 0 1px rgba(159, 182, 255, .7), 0 0 0 4px rgba(159, 182, 255, .12); }
+  .hp { position: absolute; left: -9999px; opacity: 0; }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
   .panel { padding: 24px; overflow: hidden; }
   .figure, .copy { min-width: 0; }
   @media (max-width: 1000px) { :global(main.uw) { padding-top: 120px; } .grid { grid-template-columns: 1fr; gap: 48px; } }
