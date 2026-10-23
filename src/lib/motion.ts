@@ -27,29 +27,6 @@ function smoothScroll() {
   return lenis;
 }
 
-function preloader(): Promise<void> {
-  const pre = document.getElementById('pre');
-  const bar = document.getElementById('preBar');
-  const pct = document.getElementById('prePct');
-  let seen = false;
-  try { seen = !!sessionStorage.getItem('gw-seen'); sessionStorage.setItem('gw-seen', '1'); } catch { /* storage blocked */ }
-  if (!pre || !bar || !pct || seen) { pre?.remove(); return Promise.resolve(); }
-
-  const state = { p: 0 };
-  return new Promise((resolve) => {
-    gsap.timeline({ onComplete: () => pre.remove() })
-      .to(state, {
-        p: 100, duration: 1.5, ease: 'power2.inOut',
-        onUpdate: () => {
-          const n = Math.round(state.p), f = Math.round(n / 5);
-          pct.textContent = `${n}%`;
-          bar.textContent = `[${'█'.repeat(f)}${'░'.repeat(20 - f)}]`;
-        },
-      })
-      .to(pre, { clipPath: 'inset(0 0 100% 0)', duration: 1.1, ease: 'expo.inOut' }, '+=0.15')
-      .add(() => resolve(), '<+0.45');
-  });
-}
 
 function intro() {
   const h1 = document.querySelector<HTMLElement>('[data-split="intro"]');
@@ -154,11 +131,10 @@ function scramble() {
 }
 
 export async function initMotion(reduce: boolean) {
-  if (reduce) { document.getElementById('pre')?.remove(); setStep(stepCount() - 1, true); return; }
+  if (reduce) { setStep(stepCount() - 1, true); return; }
 
   const lenis = smoothScroll();
   await document.fonts?.ready;
-  await preloader();
   intro();
   headings();
   reveals();

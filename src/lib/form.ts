@@ -117,7 +117,8 @@ export function initForm() {
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
         body: JSON.stringify({
           access_key: key, subject: `New project brief · ${b.Name}`, from_name: 'Gradient Works website',
-          name: b.Name, email: b.Email, replyto: b.Email, ...b,
+          name: b.Name, email: b.Email, replyto: b.Email,
+          ...Object.fromEntries(Object.entries(b).filter(([k]) => k !== 'Name' && k !== 'Email')),
         }),
       });
       const json = await res.json().catch(() => ({}));

@@ -2,7 +2,7 @@
   --bg: #060608;
   --text: #f3f1ec;
   --mute: rgba(243, 241, 236, .58);
-  --faint: rgba(243, 241, 236, .32);
+  --faint: rgba(243, 241, 236, .5);   /* 4.8:1 on the base background (WCAG AA) */
   --line: rgba(255, 255, 255, .08);
   --glass: rgba(255, 255, 255, .045);
   --glass-hi: rgba(255, 255, 255, .08);

@@ -16,7 +16,6 @@ import { plans } from '../data/site';
         <article class={`plan glass${p.featured ? ' featured' : ''}`} data-tilt data-reveal>
           <div class="row">
             <div><h3>{p.name}</h3><p>{p.tagline}</p></div>
-            {p.featured && <span class="tag mono">Most common</span>}
           </div>
           <p class="price">{p.price} <small>{p.unit}</small></p>
           <ul>{p.items.map((it) => <li><span class="mono">[x]</span>{it}</li>)}</ul>

@@ -32,7 +32,6 @@ const slides = [
             <p class="cap">{s.cap}</p>
           </div>
         ))}
-        <span class="corner mono">fig. live</span>
       </div>
       <div class="tabs" role="tablist">
         {slides.map((s, i) => <button class={`tab mono${i === 0 ? ' on' : ''}`} role="tab" aria-selected={i === 0}><i></i>{s.tab}</button>)}
@@ -70,7 +69,6 @@ const slides = [
   .slide pre { position: absolute; left: 0; right: 0; top: 46%; transform: translateY(-50%); }
   .slide::after { content: ""; position: absolute; inset: 56% 0 0; background: linear-gradient(transparent, rgba(16, 15, 13, .92) 75%); pointer-events: none; }
   .cap { position: absolute; z-index: 1; left: 28px; right: 28px; bottom: 24px; max-width: 440px; color: var(--text); font-size: clamp(17px, 1.5vw, 21px); line-height: 1.25; letter-spacing: -.03em; }
-  .corner { position: absolute; top: 18px; right: 20px; z-index: 2; color: var(--faint); font-size: 10px; }
   .tabs { display: grid; grid-template-columns: repeat(3, 1fr); margin-top: 18px; }
   .tab { position: relative; text-align: left; padding-top: 14px; font-size: 11px; color: var(--faint); transition: color .4s; }
   .tab::before, .tab i { content: ""; position: absolute; top: 0; left: 0; height: 1px; }

@@ -15,7 +15,6 @@ const { title, description, class: cls } = Astro.props;
 ---
 
 <Base title={title ? `${title} · ${site.name}` : undefined} description={description}>
-  <slot name="before" />
   <Header />
   <Palette />
   <main class={cls}>
