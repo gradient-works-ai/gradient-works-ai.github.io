@@ -108,14 +108,20 @@ function footer() {
   // Scale the wordmark so it exactly fills its container, whatever the font metrics or window shape.
   const box = mark?.parentElement;
   if (mark && box) {
-    const fit = () => {
+    // Only refit when the available width changes. Refitting on height changes caused a feedback loop
+    // (fit → new height → observer → fit) that resized the page every frame.
+    let lastRoom = -1;
+    const fit = (force = false) => {
       const cs = getComputedStyle(box);
       const room = box.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+      if (!force && Math.abs(room - lastRoom) < 1) return;
+      lastRoom = room;
       const size = parseFloat(getComputedStyle(mark).fontSize);
-      if (mark.scrollWidth > 0) mark.style.fontSize = `${(size * room) / mark.scrollWidth}px`;
+      const width = mark.getBoundingClientRect().width;   // sub-pixel, unlike scrollWidth
+      if (width > 0) mark.style.fontSize = `${(size * room) / width}px`;
     };
-    document.fonts?.ready.then(fit);
-    new ResizeObserver(fit).observe(box);
+    document.fonts?.ready.then(() => fit(true));
+    new ResizeObserver(() => fit()).observe(box);
   }
   mark?.parentElement?.addEventListener('pointermove', (e) => {
     const r = mark.getBoundingClientRect();
