@@ -53,8 +53,8 @@ function headings() {
     SplitText.create(el, {
       type: 'lines', mask: 'lines', linesClass: 'line', autoSplit: true,
       onSplit: (self) => gsap.from(self.lines, {
-        yPercent: 115, duration: 1.3, ease: 'expo.out', stagger: 0.09,
-        scrollTrigger: { trigger: el, start: 'top 88%', once: true },
+        yPercent: 110, duration: 0.75, ease: 'expo.out', stagger: 0.05,
+        scrollTrigger: { trigger: el, start: 'top 100%', once: true },
       }),
     });
     gsap.set(el, { visibility: 'visible' });
@@ -63,8 +63,8 @@ function headings() {
 
 function reveals() {
   ScrollTrigger.batch('[data-reveal]', {
-    start: 'top 90%', once: true,
-    onEnter: (batch) => gsap.to(batch, { opacity: 1, y: 0, filter: 'blur(0px)', duration: 1.3, ease: 'expo.out', stagger: 0.1 }),
+    start: 'top 105%', once: true,   // begins just before the element scrolls into view
+    onEnter: (batch) => gsap.to(batch, { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.6, ease: 'power3.out', stagger: 0.04 }),
   });
 }
 

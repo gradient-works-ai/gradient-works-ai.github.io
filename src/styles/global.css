@@ -92,7 +92,7 @@ canvas.ascii { display: block; max-width: 100%; }
 .fig b { font-weight: 400; color: var(--text); }
 
 /* ---------- motion initial states (only when JS motion is on) ---------- */
-html.motion [data-reveal] { opacity: 0; transform: translateY(40px); filter: blur(10px); }
+html.motion [data-reveal] { opacity: 0; transform: translateY(18px); filter: blur(4px); }
 html.motion [data-intro] { opacity: 0; transform: translateY(28px); filter: blur(10px); }
 html.motion [data-split] { visibility: hidden; }
 .line { padding-bottom: .06em; }
