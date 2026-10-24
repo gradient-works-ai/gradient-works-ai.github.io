@@ -12,7 +12,7 @@ const finePointer = matchMedia('(pointer: fine)').matches;
 const qsa = <T extends Element = HTMLElement>(s: string) => [...document.querySelectorAll<T>(s)];
 
 function smoothScroll() {
-  const lenis = new Lenis({ lerp: 0.24, wheelMultiplier: 1 });   // higher lerp = snappier; 0.1 is Lenis' default
+  const lenis = new Lenis({ lerp: 0.32, wheelMultiplier: 1.1 });   // higher lerp = snappier; 0.1 is Lenis' default
   setLenis(lenis);
   lenis.on('scroll', ScrollTrigger.update);
   gsap.ticker.add((t) => lenis.raf(t * 1000));
