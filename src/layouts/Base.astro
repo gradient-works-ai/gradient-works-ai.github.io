@@ -15,6 +15,13 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
 const ogImage = new URL('/og.png', Astro.site);
 
 // Structured data so search engines know who runs the studio and what it offers.
+const website = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: site.name,
+  alternateName: ['Gradient Works AI', 'gradientworksai.in'],
+  url: Astro.site?.href,
+};
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'ProfessionalService',
@@ -22,7 +29,7 @@ const jsonLd = {
   url: Astro.site?.href,
   description: site.description,
   email: site.email,
-  logo: new URL('/apple-touch-icon.png', Astro.site).href,
+  logo: new URL('/icon-512.png', Astro.site).href,
   image: ogImage.href,
   areaServed: 'Worldwide',
   address: { '@type': 'PostalAddress', addressLocality: 'Bangalore', addressCountry: 'IN' },
@@ -48,9 +55,12 @@ const jsonLd = {
     <meta name="author" content={site.author.name} />
     <meta name="theme-color" content="#060608" />
     <link rel="canonical" href={canonical} />
+    <!-- Search results need a square raster icon of 48px or more; browsers prefer the SVG. -->
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
+    <link rel="icon" href="/icon-96.png" sizes="96x96" type="image/png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
@@ -63,6 +73,7 @@ const jsonLd = {
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content={ogImage} />
     <link rel="sitemap" href="/sitemap.xml" />
+    <script type="application/ld+json" set:html={JSON.stringify(website)} />
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
     <!-- Motion states only apply when JS runs and the viewer hasn't asked for reduced motion. -->
     <script is:inline>

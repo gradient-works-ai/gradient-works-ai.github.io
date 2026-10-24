@@ -1,7 +1,7 @@
 export const site = {
   name: 'Gradient Works',
   url: 'https://gradientworksai.in',
-  description: 'Gradient Works is an applied AI studio that designs, trains and tests custom machine learning models for startups, labs and small teams.',
+  description: 'Applied AI studio in Bangalore. We build, test and evaluate custom machine learning models for startups and research labs, with fixed prices and full handover.',
   email: 'dasarimanas049@gmail.com',
   github: 'https://github.com/gradient-works-ai',
   author: { name: 'Manas Dasari', url: 'https://www.algorithmicbit.tech/' },
