@@ -10,7 +10,7 @@ const { m } = Astro.props;
 const done = new URL('/lab/notified/', Astro.site).href;
 ---
 
-<Page title={`${m.name} — Under the works`} description={m.blurb} class="uw">
+<Page title={`${m.name}, in development`} description={m.blurb} class="uw" crumbs={[{ name: 'Lab', href: '/lab/' }, { name: m.name, href: `/lab/${m.slug}/` }]}>
     <div class="wrap grid">
       <div class="copy">
         <a class="back mono" href="/lab/" data-intro>← Back to the lab</a>

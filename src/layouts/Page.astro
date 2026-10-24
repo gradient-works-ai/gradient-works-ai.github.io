@@ -5,16 +5,22 @@ import Palette from '../components/Palette.astro';
 import Footer from '../components/Footer.astro';
 import { site } from '../data/site';
 
+interface Crumb { name: string; href: string }
 interface Props {
   title?: string;
   description?: string;
   class?: string;
+  /** Breadcrumb trail below Home; defaults to this page alone. */
+  crumbs?: Crumb[];
+  /** Keep confirmation and error pages out of search results (and out of sitelinks). */
+  noindex?: boolean;
 }
 
-const { title, description, class: cls } = Astro.props;
+const { title, description, class: cls, crumbs, noindex = false } = Astro.props;
+const trail = crumbs ?? (title && Astro.url.pathname !== '/' ? [{ name: title, href: Astro.url.pathname }] : []);
 ---
 
-<Base title={title ? `${title} · ${site.name}` : undefined} description={description}>
+<Base title={title ? `${title} | ${site.name}` : undefined} description={description} crumbs={trail} noindex={noindex}>
   <Header />
   <Palette />
   <main class={cls}>

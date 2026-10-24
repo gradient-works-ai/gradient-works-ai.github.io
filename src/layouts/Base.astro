@@ -8,9 +8,11 @@ import { site, founder, services } from '../data/site';
 interface Props {
   title?: string;
   description?: string;
+  crumbs?: { name: string; href: string }[];
+  noindex?: boolean;
 }
 
-const { title = `${site.name} — Applied AI research & model engineering`, description = site.description } = Astro.props;
+const { title = `Applied AI Research & Model Engineering | ${site.name}`, description = site.description, crumbs = [], noindex = false } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const ogImage = new URL('/og.png', Astro.site);
 
@@ -22,6 +24,14 @@ const website = {
   alternateName: ['Gradient Works AI', 'gradientworksai.in'],
   url: Astro.site?.href,
 };
+// Breadcrumbs help Google understand the site's structure (and pick sitelinks).
+const breadcrumbs = crumbs.length ? {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [{ name: 'Home', href: '/' }, ...crumbs].map((c, i) => ({
+    '@type': 'ListItem', position: i + 1, name: c.name, item: new URL(c.href, Astro.site).href,
+  })),
+} : null;
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'ProfessionalService',
@@ -54,6 +64,7 @@ const jsonLd = {
     <meta name="description" content={description} />
     <meta name="author" content={site.author.name} />
     <meta name="theme-color" content="#060608" />
+    {noindex && <meta name="robots" content="noindex, follow" />}
     <link rel="canonical" href={canonical} />
     <!-- Search results need a square raster icon of 48px or more; browsers prefer the SVG. -->
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
@@ -75,6 +86,7 @@ const jsonLd = {
     <link rel="sitemap" href="/sitemap.xml" />
     <script type="application/ld+json" set:html={JSON.stringify(website)} />
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    {breadcrumbs && <script type="application/ld+json" set:html={JSON.stringify(breadcrumbs)} />}
     <!-- Motion states only apply when JS runs and the viewer hasn't asked for reduced motion. -->
     <script is:inline>
       if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('motion');
