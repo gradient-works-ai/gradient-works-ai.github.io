@@ -18,6 +18,15 @@ function smoothScroll() {
   gsap.ticker.add((t) => lenis.raf(t * 1000));
   gsap.ticker.lagSmoothing(0);
 
+  // Re-measure whenever the page's height changes after load (late fonts, the footer wordmark fitting
+  // itself, FAQ answers opening...). Otherwise Lenis keeps a stale scroll limit and snaps back short of the bottom.
+  let pending = 0;
+  new ResizeObserver(() => {
+    lenis.resize();
+    clearTimeout(pending);
+    pending = window.setTimeout(() => ScrollTrigger.refresh(), 200);
+  }).observe(document.body);
+
   // Header tucks away while scrolling down, returns on the way up.
   const hdr = document.getElementById('hdr');
   lenis.on('scroll', (l: Lenis) => {
