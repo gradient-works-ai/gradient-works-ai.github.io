@@ -6,10 +6,12 @@ import { initClick } from '../lib/click';
 import { initBackdrop } from '../lib/backdrop';
 import { initForm } from '../lib/form';
 import { initPortrait } from '../lib/portrait';
+import { initLiquid } from '../lib/liquid';
 
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 initBackdrop(reduce);
+initLiquid();
 initUi();
 initForm();
 initClick();

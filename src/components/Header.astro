@@ -7,7 +7,7 @@ const home = path === '/';
 ---
 
 <header class="hdr" id="hdr">
-  <nav class="bar glass" aria-label="Main">
+  <nav class="bar glass" aria-label="Main" data-liquid>
     <a class="brand" href={home ? '#top' : '/'} data-scroll={home || undefined}><Logo id="logo-hdr" size={19} /> Gradient Works</a>
     <ul class="links">
       {nav.filter((n) => n.href !== '/contact/').map((n) => <li><a href={n.href} class={path.startsWith(n.href) ? 'on' : undefined} aria-current={path.startsWith(n.href) ? 'page' : undefined} data-scramble>{n.label}</a></li>)}
@@ -22,11 +22,12 @@ const home = path === '/';
 </header>
 
 <style>
-  .hdr { view-transition-name: site-header; position: fixed; z-index: 50; top: 16px; left: 0; right: 0; display: flex; justify-content: center; padding: 0 16px; transition: transform .7s var(--ease); }
+  .hdr { position: fixed; z-index: 50; top: 16px; left: 0; right: 0; display: flex; justify-content: center; padding: 0 16px; transition: transform .7s var(--ease); }
   .hdr:global(.hide) { transform: translateY(-140%); }
   /* Liquid glass (macOS Control Center style): bright translucent fill, heavy blur + saturation,
      a specular rim that's brightest top-left, and an inner top highlight. */
-  .bar { position: relative; width: 100%; max-width: 1080px; height: 62px; padding: 0 9px 0 22px; border-radius: 40px; display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 24px;
+  /* the transition name lives on the bar itself: on .hdr it would make the wrapper a backdrop root and blank the glass */
+  .bar { view-transition-name: site-header; position: relative; width: 100%; max-width: 1080px; height: 62px; padding: 0 9px 0 22px; border-radius: 40px; display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 24px;
     background: linear-gradient(180deg, rgba(255, 255, 255, .13), rgba(255, 255, 255, .05) 55%, rgba(255, 255, 255, .07));
     backdrop-filter: blur(26px) saturate(190%) brightness(1.08); -webkit-backdrop-filter: blur(26px) saturate(190%) brightness(1.08);
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, .32), inset 0 -1px 0 rgba(255, 255, 255, .06), inset 0 0 22px rgba(255, 255, 255, .05), 0 12px 40px -14px rgba(0, 0, 0, .65);
@@ -34,6 +35,17 @@ const home = path === '/';
   .bar::before { content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 1px; pointer-events: none;
     background: linear-gradient(135deg, rgba(255, 255, 255, .55), rgba(255, 255, 255, .1) 32%, rgba(255, 255, 255, .03) 60%, rgba(255, 255, 255, .28));
     -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude; }
+  .bar:global(.liquid) {
+    background: linear-gradient(180deg, rgba(255, 255, 255, .06), rgba(255, 255, 255, .02) 60%, rgba(255, 255, 255, .04));
+    box-shadow:
+      inset 1.5px 1.5px 1px -1px rgba(255, 255, 255, .75),      /* bright specular top-left edge */
+      inset -1px -1px 1px -0.5px rgba(255, 255, 255, .28),      /* softer bottom-right edge */
+      inset 0 0 0 1px rgba(255, 255, 255, .1),
+      inset 0 -10px 18px -12px rgba(255, 255, 255, .12),        /* light gathering at the lower rim */
+      0 10px 30px -10px rgba(0, 0, 0, .55), 0 2px 6px -2px rgba(0, 0, 0, .4);
+  }
+  .bar:global(.liquid)::before { opacity: .45; }
+  .hdr:global(.scrolled) .bar:global(.liquid) { background: linear-gradient(180deg, rgba(255, 255, 255, .07), rgba(255, 255, 255, .03) 60%, rgba(255, 255, 255, .05)); }
   .hdr:global(.scrolled) .bar { background: linear-gradient(180deg, rgba(255, 255, 255, .15), rgba(255, 255, 255, .07) 55%, rgba(255, 255, 255, .09)); }
   .brand { font-size: 18px; letter-spacing: -.04em; display: flex; gap: 10px; align-items: center; }
   .links { display: flex; justify-content: center; gap: 4px; font-size: 14px; color: rgba(243, 241, 236, .72); }
