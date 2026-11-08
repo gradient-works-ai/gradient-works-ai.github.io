@@ -50,7 +50,7 @@ export const nav = [
   { href: '/contact/', label: 'Contact', teaser: 'Tell us about the problem. Reply within 48h.', glyph: '[✉] →' },
 ];
 
-export const stack = ['PyTorch', 'Hugging Face', 'scikit-learn', 'FastAPI', 'Docker', 'Weights & Biases', 'ONNX', 'LangChain'];
+export const stack = ['PyTorch', 'Hugging Face', 'scikit-learn', 'FastAPI', 'Docker', 'Weights & Biases', 'ONNX', 'LangChain', 'Numpy', 'Pandas'];
 
 export const services = [
   { title: 'Custom Model Builds', glyph: '┌─┐\n│▓│──▶\n└─┘', items: ['Tabular prediction', 'Computer vision', 'Time series & biosignals', 'Small LLM fine-tuning'] },
